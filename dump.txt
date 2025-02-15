@@ -1,0 +1,164 @@
+\documentclass[12pt,a4paper]{article}
+
+% Language setting
+\usepackage[british]{babel}
+
+% Set page size and margins
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm]{geometry}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{hyperref}
+%\usepackage{orcidlink}
+\usepackage[title]{appendix}
+\usepackage{mathrsfs}
+\usepackage{amsfonts}
+\usepackage{booktabs} % For \toprule, \midrule, \botrule
+\usepackage{caption}  % For \caption
+\usepackage{threeparttable} % For table footnotes
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{chngcntr}
+\usepackage{booktabs}
+\usepackage{lipsum}
+\usepackage{subcaption}
+\usepackage{authblk}
+\usepackage[T1]{fontenc}    % Font encoding
+\usepackage{csquotes}       % Include csquotes
+\usepackage{diagbox}
+\usepackage{comment}
+
+% Customize line spacing
+\usepackage{setspace}
+\onehalfspacing % 1.5 line spacing
+
+% Redefine section and subsection numbering format
+\usepackage{titlesec}
+\titleformat{\section} % Redefine section numbering format
+  {\normalfont\Large\bfseries}{\thesection.}{1em}{}
+  
+% Customize line numbering format to right-align line numbers
+\usepackage{lineno} % Add the lineno package
+\renewcommand\linenumberfont{\normalfont\scriptsize\sffamily\color{blue}}
+\rightlinenumbers % Right-align line numbers
+
+\linenumbers % Enable line numbering
+
+% Define a new command for the fourth-level title.
+\newcommand{\subsubsubsection}[1]{%
+  \vspace{\baselineskip}% Add some space
+  \noindent\textbf{#1\\}\quad% Adjust formatting as needed
+}
+% Change the position of the table caption above the table
+\usepackage{float}   % for customizing caption position
+\usepackage{caption} % for customizing caption format
+\captionsetup[table]{position=top} % caption position for tables
+
+% Define the unnumbered list
+\makeatletter
+\newenvironment{unlist}{%
+  \begin{list}{}{%
+    \setlength{\labelwidth}{0pt}%
+    \setlength{\labelsep}{0pt}%
+    \setlength{\leftmargin}{2em}%
+    \setlength{\itemindent}{-2em}%
+    \setlength{\topsep}{\medskipamount}%
+    \setlength{\itemsep}{3pt}%
+  }%
+}{%
+  \end{list}%
+}
+\makeatother
+
+% Suppress the warning about \@parboxrestore
+\pdfsuppresswarningpagegroup=1
+
+%-------------------------------------------
+% Paper Head
+%-------------------------------------------
+\title{Article title article title article title}
+
+\author[1]{First Author}
+\author[2]{Second Author}
+\author[3]{Third Author}
+\author[4]{Fourth Author}
+\author[5,*]{Fifth Author}
+\affil[1]{\small Department, University, Street, City, State ZIP, Country, https://orcid.org/0000-0002-1010-2288}
+\affil[2]{\small Department, Company, Street, City, State ZIP, Country}
+\affil[3]{\small Department, Organization, Street, City, State ZIP, Country, https://orcid.org/0000-0001-1015-3377}
+\affil[4]{\small Department, Institute, Street, City, State ZIP, Country}
+\affil[5]{\small Department, University, Street, City, State ZIP, Country, https://orcid.org/0000-0003-1025-5678}
+\affil[*]{\small Corresponding author. \texttt{user\_id@univ.edu}}
+
+\date{}  % Remove date
+
+
+==================OLD DOC==================================
+\documentclass[12pt]{article}
+%\usepackage{report}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+%\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+%\usepackage{microtype}      % microtypography
+\usepackage{lipsum}		% Can be removed after putting your text content
+\usepackage{graphicx}
+\usepackage{footnote}
+\usepackage{doi}
+\usepackage{comment}
+\usepackage{multirow}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{subfigure}
+\usepackage{setspace}
+\usepackage[skip=10pt plus1pt]{parskip} %I got rid of indent=30pt to make the paragraphs line up nicer - GI
+\usepackage[top=1.5in, bottom=1.5in, left=1in, right=1in]{geometry}
+\usepackage{titlesec}
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                                                      %%%
+%%%                  ������  !!!  READ ME  !!!  ������                   %%%
+%%%                                                                      %%%
+%%%    note with your intials if any changes/comments are added! thx     %%%
+%%%                                                                      %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{titlepage}
+    \centering
+    \includegraphics[width=3cm]{Figures/crest.jpg}\par
+    \vspace{0.3cm}
+    {\scshape\Large School of Mathematical Sciences \par}
+    \vspace{0.25cm}
+    {\scshape\Large The University of Southampton \par}
+    \vspace{0.25cm}
+    {\Large MATH 6149 - Modelling with Differential Equations \par}
+    \vspace{0.5cm}
+    {\huge\bfseries On the equations of motion of a swing\par}
+    \vspace{0.5cm}
+    {\Large Ben Crossland \par}
+    \vspace{0.25cm}
+    {\Large Chin Phin Ong (Linus) \par}
+    \vspace{0.25cm}
+    {\Large Gabriella Iuliano\par} %I dont know your full name, please insert full name here -L
+    \vspace{0.25cm}
+    {\Large Jacob Smith \par}
+    \vspace{0.25cm}
+    {\Large Zayn Khan \par}
+    %\vspace{0.25cm}
+    {\large  \par}
+    \vfill
+    {\large January 2025 \par}
+\end{titlepage}
