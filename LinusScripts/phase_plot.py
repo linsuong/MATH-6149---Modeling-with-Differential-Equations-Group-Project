@@ -1,57 +1,124 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 from scipy.integrate import solve_ivp
 
 # Constants
 g = 9.81  # Gravity (m/s^2)
-r_max = 2  # Max length (squatting)
-r_min = 1  # Min length (standing)
-cycles = 50  # Number of oscillations
-t_step = 100  # Simulation time per phase
+r_max = 7 # Max length (squatting)
+r_min = 6  # Min length (standing)
+cycles = 20 # Number of oscillations
 
-# Initial maximum angular velocity (bottom to top)
-theta_dot_plus = 2 * np.sqrt(g * r_max) / r_max
-
+#height = 2m
 # Pendulum equations
-def pendulum_system(t, state, r):
-    theta, theta_dot = state
-    theta_ddot = - (g / r) * np.sin(theta)
+def pendulum_stand(t, state_stand):
+    theta, theta_dot = state_stand
+    theta_ddot = - (g / r_min) * np.sin(theta)
     return [theta_dot, theta_ddot]
 
-# Time settings
-t_eval = np.linspace(-t_step, 0, 2000)
+def pendulum_sit(t, state_sit):
+    theta, theta_dot = state_sit
+    theta_ddot = - (g / r_max) * np.sin(theta)
+    return [theta_dot, theta_ddot]
 
-# Phase space storage
-theta_values = []
-theta_dot_values = []
+def theta_dot_plus(theta_minus):
+    return ((r_min/r_max) ** 2) * theta_minus
+
+def event_stand(t, state_stand):
+    return state_stand[1]
+event_stand.terminal = True
+
+def event_sit(t, state_sit):
+    return state_sit[1]
+event_sit.terminal = True
+
+theta_dot_max = (2 * np.sqrt(g * r_max) / r_max) * ((r_max/r_min) ** 2)
+theta_dots = []
+theta_new = theta_dot_max
 
 for _ in range(cycles):
-    # r_max integration (squatting)
-    sol_max = solve_ivp(pendulum_system, (-t_step, 0), [0, theta_dot_plus], t_eval=t_eval, args=(r_max,))
-    theta_values.extend((sol_max.y[0] + np.pi) % (2 * np.pi) - np.pi)
-    theta_dot_values.extend(sol_max.y[1])
+    theta_dots.append(theta_new)
     
-    # Velocity jump at switching (r_max to r_min)
-    theta_min = (sol_max.y[0][-1] + np.pi) % (2 * np.pi) - np.pi
-    theta_dot_minus = (r_max**2 / r_min**2) * sol_max.y[1][-1]
+    theta_new = theta_dot_plus(theta_new)
     
-    # r_min integration (standing)
-    sol_min = solve_ivp(pendulum_system, (-t_step, 0), [theta_min, theta_dot_minus], t_eval=t_eval, args=(r_min,))
-    theta_values.extend((sol_min.y[0] + np.pi) % (2 * np.pi) - np.pi)
-    theta_dot_values.extend(sol_min.y[1])
-    
-    # Velocity jump at switching (r_min to r_max)
-    theta_dot_plus = (r_min**2 / r_max**2) * sol_min.y[1][-1]
+#print(theta_dots)
+#plt.scatter(np.zeros_like(theta_dots), theta_dots)
+#plt.show()
+evals = cycles - 1
+times = [0]
+total_time = []
+total_theta = []
+max_time_sit = 0
+max_time_stand = 0
 
-# Phase plot
-plt.figure(figsize=(10, 6))
-plt.scatter(theta_values, theta_dot_values, s=0.5, color="b", alpha=0.7, label="Phase Trajectory")
-plt.xlabel("Theta (rad)")
-plt.ylabel("Theta dot (rad/s)")
-plt.title("Phase Portrait of Kiiking Swing (θ = 0 Bottom, θ = π Top)")
-plt.axvline(0, color='gray', linestyle='--', alpha=0.5, label="Bottom of Swing (0)")
-plt.axvline(np.pi, color='red', linestyle='--', alpha=0.5, label="Top of Swing (π)")
-plt.axvline(-np.pi, color='red', linestyle='--', alpha=0.5)
-plt.legend()
+for i in range(evals):
+    y_0 = [0, theta_dots[i + 1]]
+    
+    if i % 2 == 1:
+        sol_sit = solve_ivp(pendulum_sit, t_span = [0, 100], y0 = y_0, method = 'RK45', t_eval = np.linspace(0, 10, 10000), events = event_sit)
+        
+        #rmax
+        plt.plot(sol_sit.y[1], -sol_sit.y[0], label = 'sit', color = 'blue')
+        plt.plot(-sol_sit.y[1], sol_sit.y[0], label = 'sit', color = 'blue')
+        
+        max_time_sit = max(sol_sit.t)
+        times.append(max_time_sit)
+        
+        total_time.append(sol_sit.t + times[i])
+        #total_time.append(sol_sit.t + max_time_sit)
+        
+        total_theta.append(sol_sit.y[1])
+        #total_theta.append(np.flip(-sol_sit.y[1]))
+    
+    else:
+        sol_stand = solve_ivp(pendulum_stand, t_span = [0, 100], y0 = y_0, method = 'RK45', t_eval = np.linspace(0, 10, 10000), events = event_stand)
+        #print(sol_stand)
+        #rmin
+        plt.plot(sol_stand.y[1], sol_stand.y[0], label = 'stand', color = 'blue')
+        
+        if i != 0:
+            plt.plot(-sol_stand.y[1], -sol_stand.y[0], label = 'stand', color = 'blue') 
+            
+        max_time_stand = max(sol_stand.t)
+        times.append(max_time_stand) 
+        
+        #total_time.append(sol_stand.t + max_time_stand)
+        #total_time.append(np.flip(-sol_stand.t) + max_time_stand)
+        
+        #total_theta.append(sol_stand.y[1])
+        #total_theta.append(np.flip(-sol_stand.y[1]))
+    
+#print(times)
+#print(np.sum(times))
+
+#plt.legend()
+plt.grid()
+plt.axhline(0,color='black')
+plt.axvline(0,color='black')
+plt.xlim(-0.75 * np.pi - 0.2, 0.75 * np.pi + 0.2)
+plt.ylim(-2.1, 2.52)
+plt.scatter(0, 2 * np.sqrt(g * r_max) / r_max, c = 'red', marker = 'x')
+plt.gca().yaxis.set_major_locator(ticker.MultipleLocator(0.5))
+plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(np.pi/4))
+plt.gca().xaxis.set_major_formatter(
+    ticker.FuncFormatter(lambda val, pos: 
+                         r'$0$' if np.isclose(val, 0, atol=1e-10) else 
+                         rf'${val/np.pi:.2g}\pi$')
+                                    )
+plt.text(0.1, (2 * np.sqrt(g * r_max) / r_max) - 0.2, s = '$\\theta_{max}$', color = 'red')
+plt.title('Phase Portrait of Kikker')
+plt.xlabel(r'$\theta$ (radians)')
+plt.ylabel(r'$\dot{\theta}$ (rad/s)')
+plt.savefig('Figures/phase_plot.pdf') 
+plt.close('all')
+
+flat_time = np.array(np.concatenate(total_time), dtype=np.float64)
+flat_theta = np.array(np.concatenate(total_theta), dtype=np.float64)
+
+plt.plot(flat_time, flat_theta, label='Total Time vs Theta')
+plt.xlabel('Time (s)')
+plt.ylabel(r'$\theta$ (radians)')
+plt.title('Combined Theta vs Time')
 plt.grid(True)
+plt.legend()
 plt.show()
