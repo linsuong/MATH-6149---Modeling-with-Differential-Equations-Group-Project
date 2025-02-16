@@ -58,7 +58,7 @@ for i in range(evals):
         sol_sit = solve_ivp(pendulum_sit, t_span = [0, 100], y0 = y_0, method = 'RK45', t_eval = np.linspace(0, 10, 10000), events = event_sit)
         
         #rmax
-        plt.plot(sol_sit.y[1], -sol_sit.y[0], label = 'sit', color = 'blue')
+        plt.plot(-sol_sit.y[1], -sol_sit.y[0], label = 'sit', color = 'blue')
         plt.plot(-sol_sit.y[1], sol_sit.y[0], label = 'sit', color = 'blue')
         
         max_time_sit = max(sol_sit.t)
@@ -77,7 +77,7 @@ for i in range(evals):
         plt.plot(sol_stand.y[1], sol_stand.y[0], label = 'stand', color = 'blue')
         
         if i != 0:
-            plt.plot(-sol_stand.y[1], -sol_stand.y[0], label = 'stand', color = 'blue') 
+            plt.plot(sol_stand.y[1], -sol_stand.y[0], label = 'stand', color = 'blue') 
             
         max_time_stand = max(sol_stand.t)
         times.append(max_time_stand) 
@@ -110,6 +110,7 @@ plt.title('Phase Portrait of Kikker')
 plt.xlabel(r'$\theta$ (radians)')
 plt.ylabel(r'$\dot{\theta}$ (rad/s)')
 plt.savefig('Figures/phase_plot.pdf') 
+plt.show()
 plt.close('all')
 
 flat_time = np.array(np.concatenate(total_time), dtype=np.float64)
