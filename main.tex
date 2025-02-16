@@ -19,7 +19,8 @@
 \usepackage{gensymb}
 \usepackage{float}
 \usepackage{amsmath}
-\usepackage{subfigure}
+%\usepackage{subfigure}
+\usepackage{subcaption}
 \usepackage{setspace}
 \usepackage[skip=10pt plus1pt]{parskip} %I got rid of indent=30pt to make the paragraphs line up nicer - GI
 \usepackage[top=1.5in, bottom=1.5in, left=1in, right=1in]{geometry}
@@ -133,9 +134,11 @@ Looking at the $\mathbf{e_r}$ and $\mathbf{e_\theta}$ components separately give
 Note that the $r \dot{\theta}^2$ term is the centrifugal force and the $2 \dot{r}\dot{\theta}$ corresponds to a Coriolis term.  Solving the two coupled ordinary differential equations will allow us to describe the motion more accurately.
 
 Looking at equation \ref{ODE2}, and multiplying both sides of the equation by $r$ allows us to rewrite equation \ref{ODE2} as:
-$$\frac{d}{dt}(r^2 \dot{\theta}) = -gr\sin(\theta).$$
+\begin{equation}
+    \frac{d}{dt}(r^2 \dot{\theta}) = -gr\sin(\theta)
+    \label{ODE3}
+\end{equation}
 We can then integrate both sides of the equation about a small interval $-\epsilon$ to $\epsilon$ and take the limit as $\epsilon \to 0$, where we let $\dot{\theta}$ be either $>0$ or $<0$ in the small step in the interval (it does not change sign) and choose $\epsilon$ to be $\ll 1$. This gives that the $RHS = 0$ as the $RHS$ is continuous in $t$ and we are integrating over a small discontinuity (see figure \ref{Figrdiscont} and \ref{Figrjump}),
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.3\textwidth]{Figures/rdiscont.png}
@@ -149,16 +152,13 @@ We can then integrate both sides of the equation about a small interval $-\epsil
     \caption{On the left, $r$ goes from some constant value $r_{past}$  for $t = -\epsilon$ to $r_{future}$ for $t=\epsilon$. Similarly, $\dot{\theta}$ is some value $\dot{\theta}_-$ just before $t=0$ and goes to $\dot{\theta}_+$ immediately after the discontinuity. \label{Figrjump}}
     \label{fig1}
 \end{figure}
-
 % I DONT REMEMBER WHY, WE NEED TO ASK
 we are left with,
 $$\lim_{\epsilon \to 0} \int_{-\epsilon} ^ \epsilon \frac{d}{dt}(r^2 \dot{\theta}) = 0.$$
-
 Which implies that:
 \begin{equation}
 \lim_{\epsilon \to 0}\big[r^2 \dot{\theta}\big]^\epsilon_{-\epsilon} = 0,\label{Thetaeq}
 \end{equation}
-
 and therefore we can find the relationship between $\dot{\theta_-}$ and $\dot{\theta}_+$, the $\dot{\theta}$ evaluated at $t=-\epsilon$ and $t = \epsilon$ respectively. Equation \ref{Thetaeq} implies:
 $$\lim_{\epsilon \to 0}(r^2_{past} \dot{\theta} \big|_{t= -\epsilon} - r^2_{future} \dot{\theta} \big|_{t=\epsilon}) = 0$$
 
@@ -185,17 +185,24 @@ With this in mind, an optimal method of swinging becomes apparent as we can obse
 \begin{equation}
     \dot{\theta}_{2m} = (-1)^ma^{2m}\dot{\theta}_0, \, m \in \mathbb{Z}.
 \end{equation}
-In this way, $m$ can be interpreted as the number of swings.Where $\dot{\theta}_0$ is the small velocity that the swing starts with due to perturbations. The following figure demonstrates this in terms of the phase space in figure \ref{fig:phase_space}. The phase space was obtained by numerically solving the differential equation in pieces, as we have the relationship between $\dot\theta_{n_+}$ and $\dot\theta_{n_-}$ for any number of swings $n$. It is obvious that $(\dot\theta_{+})_m = (\dot\theta_-)_{m+1}$, so we can obtain initial values for the numerical solution.
-\begin{figure}[ht]
+In this way, $m$ can be interpreted as the number of swings, where $\dot{\theta}_0$ is the small velocity that the swing starts with due to perturbations. The following figure demonstrates this in terms of the phase space in figure \ref{fig:phase_space}. The phase space was obtained by numerically solving the differential equation in pieces, as we have the relationship between $\dot\theta_{n_+}$ and $\dot\theta_{n_-}$ for any number of swings $n$. It is obvious that $(\dot\theta_{+})_m = (\dot\theta_-)_{m+1}$, so we can obtain initial values for the numerical solution. The plot of $\theta$ against $t$ plot is also easily obtained and is shown in Fig. \ref{fig:theta_time}.
+\begin{figure*}[ht]
     \centering
-    \includegraphics[width=0.7\linewidth]{Figures/phase_plot.pdf}
-    \caption{Phase space of the swing, ($\theta$,$\dot{\theta}$), parametrised by $t$.}
-    \label{fig:phase_space}
-\end{figure}
-
-
-
-
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figures/phase_plot.pdf}
+        \caption{Phase space of the swing, ($\theta$,$\dot{\theta}$), parametrised by $t$.}
+        \label{fig:phase_space}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figures/thetatimeplot.pdf}
+        \caption{Theta against time}
+        \label{fig:theta_time}
+    \end{subfigure}
+    \caption{Plots of the differential equation Eqn. \ref{ODE3}, taking into account the discontinuities. Obtained via numerical solution.}
+\end{figure*}
 If we need only to determine the number of swings a kiiker requires to go all the way around then this can be found as a corollary of what we've already done. We can easily work out the angular velocity required at $\theta = 0$ (the bottom of the swing) to reach the top (and therefore go all the way around) using energy by equating gravitational and kinetic energy. Taking the pivot of the swing to be the zero point, where above the swing the distance will be positive and below the swing it will be negative:
 %clarification of the physics above, and fixed typo in equationbelow. please correct me if anything is off -L
 \begin{align}
