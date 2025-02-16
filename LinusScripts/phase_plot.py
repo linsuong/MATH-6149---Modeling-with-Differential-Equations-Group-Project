@@ -92,23 +92,36 @@ for i in range(evals):
 #print(np.sum(times))
 
 #plt.legend()
+#plt.rcParams.update({'font.size': 14})  # Adjust this value as needed
+
 plt.grid()
-plt.axhline(0,color='black')
-plt.axvline(0,color='black')
+plt.axhline(0, color='black', linewidth=1)
+plt.axvline(0, color='black', linewidth=1)
 plt.xlim(-0.75 * np.pi - 0.2, 0.75 * np.pi + 0.2)
 plt.ylim(-2.1, 2.52)
-plt.scatter(0, 2 * np.sqrt(g * r_max) / r_max, c = 'red', marker = 'x')
+
+plt.scatter(0, 2 * np.sqrt(g * r_max) / r_max, c='red', marker='x')
+
+# Tick formatting
 plt.gca().yaxis.set_major_locator(ticker.MultipleLocator(0.5))
 plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(np.pi/4))
 plt.gca().xaxis.set_major_formatter(
     ticker.FuncFormatter(lambda val, pos: 
                          r'$0$' if np.isclose(val, 0, atol=1e-10) else 
                          rf'${val/np.pi:.2g}\pi$')
-                                    )
-plt.text(0.1, (2 * np.sqrt(g * r_max) / r_max) - 0.2, s = '$\\theta_{max}$', color = 'red')
-plt.title('Phase Portrait of Kikker')
-plt.xlabel(r'$\theta$ (radians)')
-plt.ylabel(r'$\dot{\theta}$ (rad/s)')
-plt.savefig('Figures/phase_plot.pdf') 
+)
+
+# Label for theta_max
+plt.text(0.1, (2 * np.sqrt(g * r_max) / r_max) - 0.2, s=r'$\theta_{max}$', color='red', fontsize=16)
+
+# Increase font size for title, labels, and ticks
+plt.title('Phase Portrait of Kikker', fontsize=16)
+plt.xlabel(r'$\theta$ (radians)', fontsize=12)
+plt.ylabel(r'$\dot{\theta}$ (rad/s)', fontsize=12)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+
+# Save and show
+plt.savefig('Figures/phase_plot.pdf')
 plt.show()
 plt.close('all')

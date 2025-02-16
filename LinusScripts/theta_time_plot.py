@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
+import matplotlib.ticker as ticker
 
 # Constants
 g = 9.81  
@@ -55,10 +56,28 @@ for i in range(cycles - 1):
 
 # Plot theta vs. time
 total_time = np.flip(total_time)
+
+
 plt.plot(total_time, total_theta, color='blue')
-plt.xlabel('Time (s)')
-plt.ylabel(r'$\theta$ (radians)')
-plt.title(r'$\theta$ vs Time for Kiiking Swing')
+plt.xlabel('Time (s)', fontsize=12)
+plt.ylabel(r'$\theta$ (radians)', fontsize=12)
+plt.title(r'$\theta$ vs Time for Kiiking Swing', fontsize=16)
 plt.grid()
+
+# Set y-axis ticks at multiples of π/2
+yticks = np.arange(-np.pi, np.pi + np.pi/2, np.pi/2)
+plt.yticks(yticks)
+plt.gca().yaxis.set_major_formatter(
+    ticker.FuncFormatter(lambda val, pos: 
+                         r'$0$' if np.isclose(val, 0, atol=1e-10) else 
+                         rf'${int(val/np.pi*2)}/2\pi$' if val != np.pi and val != -np.pi else 
+                         rf'${int(val/np.pi)}\pi$')
+)
+
+# Increase tick font sizes
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+
 plt.savefig('Figures/thetatimeplot.pdf')
 plt.show()
+plt.close('all')
