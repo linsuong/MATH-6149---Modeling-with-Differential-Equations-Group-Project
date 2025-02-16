@@ -73,7 +73,7 @@ The aim of this coursework is to investigate the behaviour of a person standing 
 
 Kiiking (from the Estonian word `kiik', meaning swing) is a sport where the goal is to make a full rotation of the swing (that is attached to the fulcrum via steel beams). The person who successfully does a full rotation with the longest shaft is the winner. The way one would operate a kiiking swing is by `pumping', standing up and squatting down on the swing. The act of standing on the swing creates a constructive force. With the correct technique, one will be able to swing higher and higher, and finally do a full rotation.
 
-In the following sections, we will attempt to model a person on a kiiking swing using differential equations to find the optimal kiiking pattern and discuss the limitations of the model. %-L
+In the following sections, we will attempt to model a person on a kiiking swing using differential equations to find the optimal kiiking pattern, solve the differential equation numerically, and discuss the limitations of the model. We found that  %-L
 
 \section{On Swings}
 %Multiple studies have been conducted on the optimal swing pattern. \cite{wirkus1998pump, klimina2022optimal, Yan2005swing}
@@ -97,9 +97,7 @@ To model the swings accurately we use Newton's second law %should we add ref? -J
 of motion in polar coordinates. We can write the position of the swing, $\mathbf{r} (t)$ 
 %can someone double check should this be bold? -js
 as it's vector components and the basis vector $\mathbf{e_r}$,
-
 $$\mathbf{r}(t) = r(t)\mathbf{e_r},$$
-
 and we can describe the change in basis vectors for polar coordinates from the Cartesian basis (and vice versa) as (see figure \ref{figBasis}) the following:
 \begin{align}
     \mathbf{e_r} &= \cos(\theta) \mathbf{e_x} + \sin(\theta) \mathbf{e_y}, \\
@@ -113,30 +111,17 @@ and we can describe the change in basis vectors for polar coordinates from the C
     \includegraphics[width=0.3\textwidth]{Figures/Swing.png}
     \caption{The position $r(t)$ of the swing at time $t$. $\theta(t)$ describes the angle that the swing makes with a vertical axis. $\mathbf{e_r}$ and $\mathbf{e_\theta}$ are the respective basis vectors and $mg$ is the total weight on the swing. \label{figBasis}} %fixed basis vectors and clarified mg to total weight, not the swing.
 \end{figure}
-
-Using the usual dot notation to indicate a derivative with respect to time, we can also find that:
+Using the usual dot notation to indicate a derivative with respect to time, we can also find that (see Appendix A.1 on Newton's Laws):
 \begin{align}
-    \dot{\mathbf{e_r}} &= \frac{d\theta}{dt} \frac{d}{d\theta}(\mathbf{e_r}),\\
-    &= \dot{\theta}(-\sin(\theta) \mathbf{e_x} + \cos(\theta) \mathbf{e_y}),\\
-    &= \dot{\theta}\mathbf{e_\theta},\\
-    \dot{\mathbf{e_\theta}} &= \frac{d\theta}{dt} \frac{d}{d\theta}(\mathbf{e_\theta}),\\
-    &= \dot{\theta} (-\cos(\theta) \mathbf{e_x} - \sin(\theta) \mathbf{e_y}),\\
-    &= -\dot{\theta} \mathbf{e_r}
+    \dot{\mathbf{e_r}} &=  \dot{\theta}\mathbf{e_\theta},\\
+    \dot{\mathbf{e_\theta}} &= -\dot{\theta} \mathbf{e_r}
 \end{align}
-
 Newton's second law gives us that $\mathbf{F} = m\mathbf{a}$, where $\mathbf{F}$ is the net force, $m$ is the mass, and $\mathbf{a}$ is the acceleration. In the case of our swing we therefore have that:
-
 $$\mathbf{F} = mg \mathbf{e_x} - T \mathbf{e_r}.$$
-
-Here, $m$ is the mass of the swing, $g$ is the acceleration due to gravity, and $T$ is the tension of the rope that attaches the swing to a fixed point. We can find the acceleration of the swing by taking two derivatives of it's position,
-\begin{align}
-    a &= \frac{d^2\mathbf{r}}{dt^2},\\
-    &= \frac{d}{dt}(\frac{d}{dt}(r\mathbf{e_r})),\\
-    &= \frac{d}{dt}(\dot{r} \mathbf{e_r} + r\mathbf{\dot{e_r}}),\\
-    &= \frac{d}{dt}(\dot{r} \mathbf{e_r} + r\dot{\theta}\mathbf{e_\theta}),\\
-    &= (\ddot{r} - r \dot{\theta}^2) \mathbf{e_r} + (2\dot{r} \dot{\theta} + r \ddot{\theta}) \mathbf{e_\theta}.
-\end{align}
-
+Here, $m$ is the mass of the swing, $g$ is the acceleration due to gravity, and $T$ is the tension of the rope that attaches the swing to a fixed point. We can find the acceleration of the swing by taking two derivatives of it's position (see Appendix A.2 on Newton's Laws),
+$$
+    a = (\ddot{r} - r \dot{\theta}^2) \mathbf{e_r} + (2\dot{r} \dot{\theta} + r \ddot{\theta}) \mathbf{e_\theta}.
+$$
 If we rewrite the $\mathbf{e_x}$ in $F$ in terms of $\mathbf{e_r}$ and $\mathbf{e_\theta}$, we then get that Newton's second law gives us:
 $$mg(\cos(\theta) \mathbf{e_r} - \sin(\theta) \mathbf{e_\theta}) - T\mathbf{e_r} = [(\ddot{r} - r \dot{\theta}^2) \mathbf{e_r} + (2\dot{r} \dot{\theta} + r \ddot{\theta}) \mathbf{e_\theta}]m$$
 
@@ -145,17 +130,15 @@ Looking at the $\mathbf{e_r}$ and $\mathbf{e_\theta}$ components separately give
     \ddot{r} - r \dot{\theta}^2 &= g\cos(\theta) - \frac{T}{m},\label{ODE1}\\
     2\dot{r} \dot{\theta} + r \ddot{\theta} &= -g\sin(\theta).\label{ODE2}
 \end{align}
-
 Note that the $r \dot{\theta}^2$ term is the centrifugal force and the $2 \dot{r}\dot{\theta}$ corresponds to a Coriolis term.  Solving the two coupled ordinary differential equations will allow us to describe the motion more accurately.
 
 Looking at equation \ref{ODE2}, and multiplying both sides of the equation by $r$ allows us to rewrite equation \ref{ODE2} as:
 $$\frac{d}{dt}(r^2 \dot{\theta}) = -gr\sin(\theta).$$
-
 We can then integrate both sides of the equation about a small interval $-\epsilon$ to $\epsilon$ and take the limit as $\epsilon \to 0$, where we let $\dot{\theta}$ be either $>0$ or $<0$ in the small step in the interval (it does not change sign) and choose $\epsilon$ to be $\ll 1$. This gives that the $RHS = 0$ as the $RHS$ is continuous in $t$ and we are integrating over a small discontinuity (see figure \ref{Figrdiscont} and \ref{Figrjump}),
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{Figures/rdiscont.png}
+    \includegraphics[width=0.3\textwidth]{Figures/rdiscont.png}
     \caption{A small interval $- \epsilon$ to $\epsilon$ about a discontinuity at $t=0$ and the assumption that $\dot{\theta} >0$ in the interval, allows us to label $r(t)$, the length from the centre of the swing and $\theta$, the angle of the swing from a $y$ axis of the two sides as $r(t) = r_{past}$ and $\theta = \theta_-$ before $t=0$ and $r(t) = r_{future}$ and $\theta = \theta_+$ after $t=0$. The solid line represents swinging anticlockwise and the dotted line is anticlockwise.\label{Figrdiscont}}
     \label{fig1}
 \end{figure}
@@ -166,7 +149,6 @@ We can then integrate both sides of the equation about a small interval $-\epsil
     \caption{On the left, $r$ goes from some constant value $r_{past}$  for $t = -\epsilon$ to $r_{future}$ for $t=\epsilon$. Similarly, $\dot{\theta}$ is some value $\dot{\theta}_-$ just before $t=0$ and goes to $\dot{\theta}_+$ immediately after the discontinuity. \label{Figrjump}}
     \label{fig1}
 \end{figure}
-
 
 % I DONT REMEMBER WHY, WE NEED TO ASK
 we are left with,
@@ -197,19 +179,22 @@ From here, it's useful to recall that $\theta_-$ and $\theta_+$ are separated in
     \dot{\theta}_+ &= a^2 \,\dot{\theta}_- \,\, \text{when standing up} \\
     \dot{\theta}_+ &= a^{-2} \,\dot{\theta}_- \,\,\text{when squatting down }\\
 \end{align}
-where $a = \frac{r_{max}}{r_{min}}$ as is implied by equation \ref{eq: ratio of past and present velocity}.\\\\
+where $a = \frac{r_{max}}{r_{min}}$ as is implied by equation \ref{eq: ratio of past and present velocity}.\\
 
 With this in mind, an optimal method of swinging becomes apparent as we can observe that $a >1$ and hence standing results in increasing one's speed and sitting down results in decreasing one's speed, both in proportion to the speed that the kiiker is already going. However, one must squat down in order to stand back up again, so we must try and maximise speed when the kiiker stands up and minimise it when they squat down. Hence, the kiiker should stand up when $\theta = 0$ (when the angular velocity is at its maximum) and squat back down when $\theta$ is at its maximum (when the angular velocity is 0 ) for that swing. With this method, velocity does not change when squatting down and only changes at $\theta = 0$ so this is the only discontinuous point in terms of angular velocity. We will later break our discontinuous equation of motion up into continuous pieces indexed by $n$ and our previous rationale has allowed us to provide initial conditions for every other piece:
 \begin{equation}
     \dot{\theta}_{2m} = (-1)^ma^{2m}\dot{\theta}_0, \, m \in \mathbb{Z}.
 \end{equation}
-In this way, $m$ can be interpreted as the number of swings.Where $\dot{\theta}_0$ is the small velocity that the swing starts with due to perturbations. The following figure demonstrates this in terms of the phase space in figure \ref{fig:phase_space}. The phase space was obtained by numerically solving the differential equation in pieces, as we have the relationship between $\dot\theta_{n_+}$ and $\dot\theta_{n_-}$ for any number of swings $n$. It is obvious that $\dot\theta^n_{+} = \dot\theta^{n+1}_-$, so we can obtain initial values for the numerical solution.
-\begin{figure}[H]
+In this way, $m$ can be interpreted as the number of swings.Where $\dot{\theta}_0$ is the small velocity that the swing starts with due to perturbations. The following figure demonstrates this in terms of the phase space in figure \ref{fig:phase_space}. The phase space was obtained by numerically solving the differential equation in pieces, as we have the relationship between $\dot\theta_{n_+}$ and $\dot\theta_{n_-}$ for any number of swings $n$. It is obvious that $(\dot\theta_{+})_m = (\dot\theta_-)_{m+1}$, so we can obtain initial values for the numerical solution.
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.7\linewidth]{Figures/phase_plot.pdf}
     \caption{Phase space of the swing, ($\theta$,$\dot{\theta}$), parametrised by $t$.}
     \label{fig:phase_space}
 \end{figure}
+
+
+
 
 If we need only to determine the number of swings a kiiker requires to go all the way around then this can be found as a corollary of what we've already done. We can easily work out the angular velocity required at $\theta = 0$ (the bottom of the swing) to reach the top (and therefore go all the way around) using energy by equating gravitational and kinetic energy. Taking the pivot of the swing to be the zero point, where above the swing the distance will be positive and below the swing it will be negative:
 %clarification of the physics above, and fixed typo in equationbelow. please correct me if anything is off -L
@@ -218,8 +203,7 @@ If we need only to determine the number of swings a kiiker requires to go all th
     \implies v = \pm 2\sqrt{gl} \,\, \text{where l is length of the swing}
 \end{align}
 
-As we are working in radians, the distance around the circle is $\theta l$ so we therefore have $v = \dot{\theta}r$ implying that $|{\dot{\theta}_{2m}}| >  \frac{2\sqrt{gl}}{l}$ must be satisfied at $\theta = 0$ in order to complete a rotation on that swing. \\
-
+As we are working in radians, the distance around the circle is $\theta l$ so we therefore have $v = \dot{\theta}r$ implying that $|{\dot{\theta}_{2m}}| >  \frac{2\sqrt{gl}}{l}$ must be satisfied at $\theta = 0$ in order to complete a rotation on that swing.
 
 Therefore, by substituting our previous equation for $|{\dot{\theta}_{2m}}|$ at $\theta = 0$, we find that the final swing is the first integer that satisfies:
 \begin{equation}
@@ -228,14 +212,13 @@ Therefore, by substituting our previous equation for $|{\dot{\theta}_{2m}}|$ at 
 
 %-ZK
 \subsection{Motion in between discontinuities}
-
 We still need to model the motion for areas where the Kiiker is staying at the same height (i.e. in between the discontinuities of the Kiiker changing their height by squatting or standing). We begin by by taking $r$ to be a constant. This transforms equations \ref{ODE1} and \ref{ODE2} into:
 \begin{align}
     \dot{\theta}^2 &= -\frac{g}{r} \cos{\theta} + \frac{T}{mr} \label{ODE1 const r}
     \\\ddot{\theta} &= -\frac{g}{r}\sin{\theta} \label{ODE2 const r}
 \end{align}
 
-Multiplying equation \ref{ODE2 const r} by $\dot{\theta}$, we can combine and re-write equation \ref{ODE1 const r} and equation \ref{ODE2 const r} as:
+Multiplying equation \ref{ODE2 const r} by $\dot{\theta}$, we can combine and recast equations \ref{ODE1 const r} and equation \ref{ODE2 const r} as:
 \begin{align}
     \dot{\theta}^2 = -\frac{g}{r}\cos(\theta) + \frac{T}{mr}
 \end{align}
@@ -243,7 +226,7 @@ Multiplying equation \ref{ODE2 const r} by $\dot{\theta}$, we can combine and re
 In terms of derivatives:
 \begin{align}
     \frac{d}{dt}(\frac{1}{2}\dot{\theta}^2) + \frac{d}{dt}(-\frac{g}{r}\cos(\theta)) &= 0
-    \\\implies \frac{d}{dt}(\frac{1}{2}\dot{\theta}^2 - \frac{g}{r}\cos(\theta)) &= 0 \label{combined derivative eqn}
+    \implies \frac{d}{dt}(\frac{1}{2}\dot{\theta}^2 - \frac{g}{r}\cos(\theta)) = 0 \label{combined derivative eqn}
 \end{align}
 
 Integrating equation \ref{combined derivative eqn} with respect to time we obtain:
@@ -255,7 +238,6 @@ Integrating equation \ref{combined derivative eqn} with respect to time we obtai
 Plugging this into equation \ref{ODE1 const r}:
 \begin{align}
     \dot{\theta}^2 &= -\frac{g}{r} \frac{r}{g}(\frac{1}{2}\dot{\theta}^2 - c) + \frac{T}{mr}
-    \\\implies\dot{\theta}^2 &= \frac{1}{2}\dot{\theta}^2 - c + \frac{T}{mr}
     \\&\implies \frac{T}{mr} = \frac{3}{2}\dot{\theta}^2 - c
 \end{align}
 
@@ -274,41 +256,44 @@ Generally, the continuous motion of the swing is described by \ref{integrated de
 \end{align}
 where $n$ is the number of discontinuities the kiiker has passed through (i.e. the number of times they have stood or squatted).
 
-After each discontinuity our angular velocity changes, following the equation:
+After each discontinuities where the kiiker stands at lowest point of the swing our angular velocity changes, following the equation:
 \begin{align}
-    \dot{\theta}_n &= a^{2n}\sigma,
+    \dot{\theta}_n &= (-1)^{m} a^{2n}\sigma,
     \label{discontinuity reln}
-    \text{ where $a = \frac{r_{max}}{r_{min}}$ and $\sigma = \dot{\theta}_0$ (the initial angular velocity)}
+    \text{ where $a = \frac{r_{max}}{r_{min}}$ and $\sigma = \dot{\theta}_0$ (the initial angular velocity). } \theta = 0.
 \end{align}
 
 % We only have this for every other equation but we can  use theta dot = 0 when t = 0 on other equations. So we'll get two different expressions for c_n. - BC
-Combining this with \ref{coninuous motion eqn} we have:
+Combining this with \ref{coninuous motion eqn} in cases where $\theta = 0$ we have:
 \begin{align}
-    \frac{1}{2}a^{4n}\sigma^2 - \frac{g}{r} = c_n
+    \frac{1}{2}(-1)^{m}a^{4n}\sigma^2 - \frac{g}{r} = c_n
 \end{align}
 
 Now that we have an expression for $c_n$ we return to \ref{tension eqn}:
-
 \begin{align}
-    \frac{T_n}{mr} = \frac{3}{2}\dot{\theta}^2 - \frac{1}{2}a^{4n}\sigma^2 + \frac{g}{r}
+    \frac{T_n}{mr} = \frac{3}{2}\dot{\theta}^2 - \frac{1}{2}(-1)^{m}a^{4n}\sigma^2 + \frac{g}{r}
 \end{align}
 %should put theta dot_n here to keep indexing consistent. - BC
-This transforms \ref{ODE1 const r} from:
+This transforms \ref{ODE1 const r} from its original form, to:
 \begin{align}
-    \dot{\theta}^2 = -\frac{g}{r}\cos{\theta} + \frac{T}{mr}
+    \dot{\theta}^2 = -\frac{g}{r}\cos{\theta} + \frac{3}{2}\dot{\theta}^2 - \frac{1}{2}(-1)^{m}a^{4n}\sigma^2 + \frac{g}{r}
+    \\\implies\dot{\theta}^2 = 2\frac{g}{r}(\cos{\theta}-1) +a^{4n}\sigma^2 
+    \label{odd final theta dot eqn}
 \end{align}
 
-\begin{align}
-    \text{to: }\dot{\theta}^2 = -\frac{g}{r}\cos{\theta} + \frac{3}{2}\dot{\theta}^2 - \frac{1}{2}a^{4n}\sigma^2 + \frac{g}{r}
-\end{align}
-Which simplifies to:
+For $\theta$, we would take the square-root of \ref{odd final theta dot eqn}. The positive solution would apply when the kiiker swings forward, while the negative solution would apply when they swing backwards.
 
+For cases where the kiiker squats as the swing reaches its highest point, we have $\dot{\theta}_n = 0$ at some $\theta_n$, transforming \ref{coninuous motion eqn} into:
 \begin{align}
-    \dot{\theta}^2 = 2\frac{g}{r}(\cos{\theta}-1) +a^{4n}\sigma^2 
-    \label{final theta dot eqn}
+    -\frac{g}{r}\cos{\theta_n} = c_n
+    \\&\implies \frac{T_n}{mr} = \frac{3}{2}\dot{\theta}^2 + \frac{g}{r}\cos{\theta_n}
+    \\&\implies \dot{\theta}^2 = \frac{2g}{r}(\cos{\theta}-\cos{\theta_n})
+    \label{even final theta dot eqn}
 \end{align}
 
-For $\theta$, we would take the square-root of \ref{final theta dot eqn}. The positive solution would apply when the kiiker swings forward, while the negative solution would apply when they swing backwards.
+Where the positive solution for $\dot{\theta}$ applies where the swing is at the maximum swinging forward, and the negative solution applies where the swing is at the maximum swinging backwards.
+
+Assuming the kiiker begins at some small perturbation where $\theta_0 \neq 0$, we take even values of $n$ when the swing is at a maximum where \ref{even final theta dot eqn} applies, and odd values of $n$ when the swing passes through the centre point, where \ref{odd final theta dot eqn} applies.
 
 \section{Limitations of the Model}
 %limitations - e.g. valid for certain angles, works for solid steel swing pole, etc. -L
@@ -327,14 +312,36 @@ Our equations also stop accurately modelling the system once the kiiker has buil
 
 \section{Individual contributions}
 \begin{itemize}
-    \item Ben Crossland - Section for a recursive solution, modelling.
-    \item Chin Phin Ong (Linus) - Introduction and literary research, section on swings, plot, proofreading
-    \item Gabriella Iuliano - abstract, on swings, conclusion
-    \item Jacob Smith - Model, Solved some equations.
-    \item Zayn Khan - Assumptions and limitations, Abstract, Physical analysis, Rubber duck
+    \item Ben Crossland - Section 3.2, modelling.
+    \item Chin Phin Ong (Linus) - Section 1, Literary research, Plots, Proofreading
+    \item Gabriella Iuliano - Abstract, Section 2, Conclusion
+    \item Jacob Smith - Model, Section 3.1, Solved some equations.
+    \item Zayn Khan - Abstract, Sections 3.3$\And$4, Rubber duck
 \end{itemize}
 
 \bibliographystyle{plain}
 \bibliography{references}
 
+\appendix
+\section{Newton's Laws}
+\subsection{Finding $\dot{\mathbf{e_r}}$ and $\dot{\mathbf{e_\theta}}$}
+To find $\dot{\mathbf{e_r}}$ and $\dot{\mathbf{e_\theta}}$ we can use the chain rule as below:
+\begin{align}
+    \dot{\mathbf{e_r}} &= \frac{d\theta}{dt} \frac{d}{d\theta}(\mathbf{e_r}),\\
+    &= \dot{\theta}(-\sin(\theta) \mathbf{e_x} + \cos(\theta) \mathbf{e_y}),\\
+    &= \dot{\theta}\mathbf{e_\theta},\\
+    \dot{\mathbf{e_\theta}} &= \frac{d\theta}{dt} \frac{d}{d\theta}(\mathbf{e_\theta}),\\
+    &= \dot{\theta} (-\cos(\theta) \mathbf{e_x} - \sin(\theta) \mathbf{e_y}),\\
+    &= -\dot{\theta} \mathbf{e_r}.
+\end{align}
+In the last equation we have substituted $\mathbf{e_r}$.
+\subsection{Acceleration of the Swing}
+The acceleration of the swing can be found by taking the second time derivative of the position of the swing:
+\begin{align}
+    a &= \frac{d^2\mathbf{r}}{dt^2},\\
+    &= \frac{d}{dt}(\frac{d}{dt}(r\mathbf{e_r})),\\
+    &= \frac{d}{dt}(\dot{r} \mathbf{e_r} + r\mathbf{\dot{e_r}}),\\
+    &= \frac{d}{dt}(\dot{r} \mathbf{e_r} + r\dot{\theta}\mathbf{e_\theta}),\\
+    &= (\ddot{r} - r \dot{\theta}^2) \mathbf{e_r} + (2\dot{r} \dot{\theta} + r \ddot{\theta}) \mathbf{e_\theta}.
+\end{align}
 \end{document}
