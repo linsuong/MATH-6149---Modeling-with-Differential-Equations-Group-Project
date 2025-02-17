@@ -186,7 +186,7 @@ With this in mind, an optimal method of swinging becomes apparent as we can obse
 \begin{equation}
     \dot{\theta}_{2m} = (-1)^ma^{2m}\dot{\theta}_0, \, m \in \mathbb{Z}.
 \end{equation}
-In this way, $m$ can be interpreted as the number of swings, where $\dot{\theta}_0$ is the small velocity that the swing starts with due to perturbations. The following figure demonstrates this in terms of the phase space in figure \ref{fig:phase_space}. The phase space was obtained by numerically solving the differential equation in pieces, as we have the relationship between $\dot\theta_{n_+}$ and $\dot\theta_{n_-}$ for any number of swings $n$. It is obvious that $(\dot\theta_{+})_m = (\dot\theta_-)_{m+1}$, so we can obtain initial values for the numerical solution. The plot of $\theta$ against $t$ plot is also easily obtained and is shown in Fig. \ref{fig:theta_time}.
+In this way, $m$ can be interpreted as the number of swings, where $\dot{\theta}_0$ is the small velocity that the swing starts with due to perturbations. The following figure demonstrates this in terms of the phase space in figure \ref{fig:phase_space}. The phase space was obtained by numerically solving the differential equation in pieces, as we have the relationship between $\dot\theta_{+}$ and $\dot\theta_{-}$ for any number of swings $n$. It is obvious that $(\dot\theta_{+})_n = (\dot\theta_-)_{n+1}$, so we can obtain initial values for the numerical solution. The plot of $\theta$ against $t$ plot is also easily obtained and is shown in Fig. \ref{fig:theta_time}.
 \begin{figure*}[ht]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
@@ -208,7 +208,7 @@ If we need only to determine the number of swings a kiiker requires to go all th
 %clarification of the physics above, and fixed typo in equationbelow. please correct me if anything is off -L
 \begin{align}
     2mgr = \frac{1}{2}mv^2 \,\, \text{where $v$ is velocity }\\
-    \implies v = \pm 2\sqrt{gl} \,\, \text{where l is length of the swing}
+    \implies v = \pm 2\sqrt{gl} \,\, \text{where $l$ is length of the swing}
 \end{align}
 
 As we are working in radians, the distance around the circle is $\theta l$ so we therefore have $v = \dot{\theta}r$ implying that $|{\dot{\theta}_{2m}}| >  \frac{2\sqrt{gl}}{l}$ must be satisfied at $\theta = 0$ in order to complete a rotation on that swing.
@@ -359,4 +359,15 @@ The acceleration of the swing can be found by taking the second time derivative 
     &= \frac{d}{dt}(\dot{r} \mathbf{e_r} + r\dot{\theta}\mathbf{e_\theta}),\\
     &= (\ddot{r} - r \dot{\theta}^2) \mathbf{e_r} + (2\dot{r} \dot{\theta} + r \ddot{\theta}) \mathbf{e_\theta}.
 \end{align}
+
+
+\begin{align}
+f_c(x,y) = 
+    \begin{cases}
+        \frac{x+y}{2}-\frac{xy}{x-y}\log{\left(\frac{x}{y}\right)}, & x\neq y\\
+        0, & x = y
+    \end{cases}
+\end{align}
+
+
 \end{document}
