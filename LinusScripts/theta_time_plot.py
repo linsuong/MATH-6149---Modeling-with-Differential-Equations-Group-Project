@@ -57,7 +57,7 @@ for i in range(cycles - 1):
 # Plot theta vs. time
 total_time = np.flip(total_time)
 
-
+plt.figsize = (15, 15)
 plt.plot(total_time, total_theta, color='blue')
 plt.xlabel('Time (s)', fontsize=12)
 plt.ylabel(r'$\theta$ (radians)', fontsize=12)
@@ -78,6 +78,6 @@ plt.gca().yaxis.set_major_formatter(
 plt.xticks(fontsize=12)
 plt.yticks(fontsize=12)
 
-plt.savefig('Figures/thetatimeplot.pdf')
+plt.savefig('Figures/thetatimeplot.pdf', bbox_inches="tight")
 plt.show()
 plt.close('all')

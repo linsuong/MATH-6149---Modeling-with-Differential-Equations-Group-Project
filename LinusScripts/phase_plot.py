@@ -94,6 +94,7 @@ for i in range(evals):
 #plt.legend()
 #plt.rcParams.update({'font.size': 14})  # Adjust this value as needed
 
+plt.figsize = (15, 15)
 plt.grid()
 plt.axhline(0, color='black', linewidth=1)
 plt.axvline(0, color='black', linewidth=1)
@@ -115,6 +116,7 @@ plt.gca().xaxis.set_major_formatter(
 plt.text(0.1, (2 * np.sqrt(g * r_max) / r_max) - 0.2, s=r'$\theta_{max}$', color='red', fontsize=16)
 
 # Increase font size for title, labels, and ticks
+
 plt.title('Phase Portrait of Kikker', fontsize=16)
 plt.xlabel(r'$\theta$ (radians)', fontsize=12)
 plt.ylabel(r'$\dot{\theta}$ (rad/s)', fontsize=12)
@@ -122,6 +124,6 @@ plt.xticks(fontsize=12)
 plt.yticks(fontsize=12)
 
 # Save and show
-plt.savefig('Figures/phase_plot.pdf')
+plt.savefig('Figures/phase_plot.pdf', bbox_inches="tight")
 plt.show()
 plt.close('all')
