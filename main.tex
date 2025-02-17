@@ -74,7 +74,7 @@ The aim of this coursework is to investigate the behaviour of a person standing 
 
 Kiiking (from the Estonian word `kiik', meaning swing) is a sport where the goal is to make a full rotation of the swing (that is attached to the fulcrum via steel beams). The person who successfully does a full rotation with the longest shaft is the winner. The way one would operate a kiiking swing is by `pumping', standing up and squatting down on the swing. The act of standing on the swing creates a constructive force. With the correct technique, one will be able to swing higher and higher, and finally do a full rotation.
 
-In the following sections, we will attempt to model a person on a kiiking swing using differential equations to find the optimal kiiking pattern, solve the differential equation numerically, and discuss the limitations of the model. We found that  %-L
+In the following sections, we will attempt to model a person on a kiiking swing using differential equations to find the optimal kiiking pattern, solve the differential equation numerically, and discuss the limitations of the model. We found that despite making quite a lot of assumptions about our swing, these assumptions did not stop us from being able to model the swing realistically. %-L
 
 \section{On Swings}
 %Multiple studies have been conducted on the optimal swing pattern. \cite{wirkus1998pump, klimina2022optimal, Yan2005swing}
@@ -85,6 +85,7 @@ In the following sections, we will attempt to model a person on a kiiking swing 
 % i think actually we should leave this separate somewhat, and maybe include more on assumptions made (e.g no friction or dissaptivie terms, point mass etc) for now? But maybe see how we get on and then maybe we can make these into subsections idk - JS
 
 %I feel like maybe it can be a subsection in the next section as an introduction to the problem? -GI
+In order to begin our model, we must state some of the assumptions that we made.  We assume that the kiiker, swing and connecting rods form a point mass located at their center of gravity, hence, ignoring air resistence.
 
 We can model our swing as a pendulum with variable length $r$.  We can model our rider with point mass $m$ and $r$ is the distance between the rider's centre of mass and the swing's support $O$ \cite{wirkus1998pump}.  
 
@@ -263,57 +264,64 @@ Generally, the continuous motion of the swing is described by \ref{integrated de
 \end{align}
 where $n$ is the number of discontinuities the kiiker has passed through (i.e. the number of times they have stood or squatted).
 
-After each discontinuities where the kiiker stands at lowest point of the swing our angular velocity changes, following the equation:
+After each discontinuity where the kiiker stands at the lowest point of the swing our angular velocity changes (so every other ODE starting at $\dot{\theta}_0$), following the equation:
 \begin{align}
-    \dot{\theta}_n &= (-1)^{m} a^{2n}\sigma,
+    \dot{\theta}_{2m} &= (-1)^{m} a^{2m}\sigma,
     \label{discontinuity reln}
-    \text{ where $a = \frac{r_{max}}{r_{min}}$ and $\sigma = \dot{\theta}_0$ (the initial angular velocity). } \theta = 0.
+    \text{ where $a = \frac{r_{max}}{r_{min}}$ and $\sigma = \dot{\theta}_0$ (the initial angular velocity) at } \theta_{2m} = 0.
 \end{align}
 
 % We only have this for every other equation but we can  use theta dot = 0 when t = 0 on other equations. So we'll get two different expressions for c_n. - BC
 Combining this with \ref{coninuous motion eqn} in cases where $\theta = 0$ we have:
 \begin{align}
-    \frac{1}{2}(-1)^{m}a^{4n}\sigma^2 - \frac{g}{r} = c_n
+    \frac{1}{2}(-1)^{m}a^{4m}\sigma^2 - \frac{g}{r} = c_{2m}
 \end{align}
 
 Now that we have an expression for $c_n$ we return to \ref{tension eqn}:
 \begin{align}
-    \frac{T_n}{mr} = \frac{3}{2}\dot{\theta}^2 - \frac{1}{2}(-1)^{m}a^{4n}\sigma^2 + \frac{g}{r}
+    \frac{T_{2m}}{mr} = \frac{3}{2}\dot{\theta}_{2m}^2 - \frac{1}{2}(-1)^{m}a^{4m}\sigma^2 + \frac{g}{r}
 \end{align}
 %should put theta dot_n here to keep indexing consistent. - BC
 This transforms \ref{ODE1 const r} from its original form, to:
 \begin{align}
-    \dot{\theta}^2 = -\frac{g}{r}\cos{\theta} + \frac{3}{2}\dot{\theta}^2 - \frac{1}{2}(-1)^{m}a^{4n}\sigma^2 + \frac{g}{r}
-    \\\implies\dot{\theta}^2 = 2\frac{g}{r}(\cos{\theta}-1) +a^{4n}\sigma^2 
+    \dot{\theta}_{2m}^2 = -\frac{g}{r}\cos{\theta_{2m}} + \frac{3}{2}\dot{\theta}_{2m}^2 - \frac{1}{2}(-1)^{m}a^{4m}\sigma^2 + \frac{g}{r}
+    \\\implies\dot{\theta}_{2m}^2 = 2\frac{g}{r}(\cos{\theta}_{2m}-1) +a^{4m}\sigma^2 
     \label{odd final theta dot eqn}
 \end{align}
 
 For $\theta$, we would take the square-root of \ref{odd final theta dot eqn}. The positive solution would apply when the kiiker swings forward, while the negative solution would apply when they swing backwards.
 
-For cases where the kiiker squats as the swing reaches its highest point, we have $\dot{\theta}_n = 0$ at some $\theta_n$, transforming \ref{coninuous motion eqn} into:
+For cases where the kiiker squats as the swing reaches its highest point, we have $\dot{\theta}_{2m-1} = 0$ at some $\theta_{2m-1,max}$ (the value of $\theta$ at the point the swing reaches its maximum amplitude), transforming \ref{coninuous motion eqn} into:
 \begin{align}
-    -\frac{g}{r}\cos{\theta_n} = c_n
-    \\&\implies \frac{T_n}{mr} = \frac{3}{2}\dot{\theta}^2 + \frac{g}{r}\cos{\theta_n}
-    \\&\implies \dot{\theta}^2 = \frac{2g}{r}(\cos{\theta}-\cos{\theta_n})
+    -\frac{g}{r}\cos{\theta_{2m-1,max}} = c_{2m-1}
+    \\&\implies \frac{T_{2m-1}}{mr} = \frac{3}{2}\dot{\theta}_{2m-1}^2 + \frac{g}{r}\cos{\theta_{2m-1,max}}
+    \\&\implies \dot{\theta}_{2m-1}^2 = \frac{2g}{r}(\cos{\theta_{2m-1}}-\cos{\theta_{2m-1,max}})
     \label{even final theta dot eqn}
 \end{align}
 
 Where the positive solution for $\dot{\theta}$ applies where the swing is at the maximum swinging forward, and the negative solution applies where the swing is at the maximum swinging backwards.
 
-Assuming the kiiker begins at some small perturbation where $\theta_0 \neq 0$, we take even values of $n$ when the swing is at a maximum where \ref{even final theta dot eqn} applies, and odd values of $n$ when the swing passes through the centre point, where \ref{odd final theta dot eqn} applies.
+Assuming the kiiker begins at $\theta_0 = 0$ with some small $\dot{\theta} \neq 0$, we take odd values of $n$ when the swing is at a maximum where \ref{even final theta dot eqn} applies, and even values of $n$ when the swing passes through the centre point, where \ref{odd final theta dot eqn} applies.
 
 \section{Limitations of the Model}
 %limitations - e.g. valid for certain angles, works for solid steel swing pole, etc. -L
 
 Our model is based on the following assumptions.
 Firstly, the kiiker and swing form a point mass located at the centre of gravity between the two. For this reason, we may neglect air resistance. In reality, there would be some resistive forces, but as the kiiker is actively increasing their amplitude we have ignored damping effects that are overcome anyway.
-Secondly, we assume the swing only moves in the plane of motion - our model does not recognise transverse motion that is not in the plane of the swinging. For a system constructed from metal poles rather than chain, this is reasonable assumption, as the poles are rigid and will not drift sideways to any meaningful degree. The poles also allow us to assume they do not compress or extend throughout the motion, so changes in $r$ only come from the kiiker 
-Furthermore, we assume the poles move smoothly around the frame with no frictional effects, which can be realistically acheived with the use of a lubricant. We have also ignored the very negligible changes in force due to gravity as the kiiker and swing move up and down.
+Secondly, we assume the swing only moves in the plane of motion - our model does not recognise transverse motion that is not in the plane of the swinging. For a system constructed from metal poles rather than chain, this is reasonable assumption, as the poles are rigid and will not drift sideways to any meaningful degree. The poles also allow us to assume they do not compress or extend throughout the motion, so changes in $r$ only come from the kiiker. Furthermore, we assume the poles move smoothly around the frame with no frictional effects, which can be realistically acheived with the use of a lubricant. We have also ignored the very negligible changes in force due to gravity as the kiiker and swing move up and down.
 
 Our equations also ignore the time taken for the kiiker to squat and stand, it is assumed that the motion of the centre of gravity between $r_{max}$ and $r_{min}$ is immediate. In reality, the kiiker would spend some fraction of time standing, but this period of time is very small compared to the period of a swing, so has been modelled as a discontinuity in length $r$.
 Our equations also stop accurately modelling the system once the kiiker has built up the energy to finally go all the way around the frame. Physically, this happens when the kiiker reaches the lowest point in their motion before swinging up and around.
 
 \section{Conclusion}
+In conclusion, we successfully modeled the motion of a kiiking swing under the air resistance is negligible, and the rod maintains a constant length. By formulating Newton’s second law in polar coordinates and analyzing the change in basis vectors, we derived an equation for the acceleration of the swing. Separating the equations for \(\mathbf{e_r}\) and \(e_{\theta}\), we solved the coupled ordinary differential equations, enabling us to interpret the relationship between the angular velocity of the swing immediately after a change in radius.  
+
+Additionally, we determined the optimal swinging technique by deriving the equation for \(\dot{\theta}_{+}\) during standing and squatting. Our results indicate that to maximize the amplitude of the swing, the rider should stand up when \(\theta = 0\) and squat back down when \(\theta\) reaches its maximum. We visualized this behavior by plotting the phase portrait of the kiiker and a graph of \(\theta\) versus time (as shown in Figure 4). Furthermore, we identified the maximum velocity of the swing before the solution closes, corresponding to the moment when the rider completes a full rotation.  
+
+Finally, we extended our model to describe the motion in regions where the kiiker maintains a constant height between discontinuities.  
+
+However, our model is based on several simplifying assumptions, such as neglecting air resistance and assuming instantaneous transitions between standing and squatting. In reality, these factors play a role in the dynamics of the swing.  Hence, for future models, we should see how getting rid of these assumptions would affect the model that we made.
+
 %conclusion, futher improvement suggestions - if improvements can be implemented quick and dirty may be worth as a subsection to the limitaitons section. -L
 
 
@@ -321,9 +329,9 @@ Our equations also stop accurately modelling the system once the kiiker has buil
 \begin{itemize}
     \item Ben Crossland - Section 3.2, modelling.
     \item Chin Phin Ong (Linus) - Section 1, Literary research, Plots, Proofreading
-    \item Gabriella Iuliano - Abstract, Section 2, Conclusion
+    \item Gabriella Iuliano - Abstract, Section 1, Section 2, Conclusion
     \item Jacob Smith - Model, Section 3.1, Solved some equations.
-    \item Zayn Khan - Abstract, Sections 3.3$\And$4, Rubber duck
+    \item Zayn Khan - Abstract, Sections 3.3$\And$4, Proofreading and editing
 \end{itemize}
 
 \bibliographystyle{plain}
