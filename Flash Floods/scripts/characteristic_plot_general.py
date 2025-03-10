@@ -1,13 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import csv
 
 shape = 'Rectangle'
 
 g = 9.81
 f = 0.1 
-A_max = 0.5
-L = 5 #std dev
+A_max = 100
+L = 0.5 #std dev
 
 def wave_speed(A):
     if shape == 'Rectangle':
@@ -25,7 +26,8 @@ def wave_speed(A):
 def A0(s):
     b = 0
     sigma = L
-    return (1/A_max) * np.exp(-((s - b)**2) / (sigma**2))
+    norm = np.sqrt(2 * np.pi * (sigma ** 2))
+    return (A_max/norm) * np.exp(-((s - b)**2) / (sigma**2))
     #return np.where(np.abs(s) <= L, A_max * (1 - np.abs(s)/L), 0)
     
 lines = []
@@ -40,19 +42,22 @@ s = np.linspace(5 * L, 5 * L, 1000)
 plt.figure(figsize=(10, 6))
 for s0 in np.linspace(- 2 * L , L * 5, 100):
     lines.append(characteristic(s0, t))
-    plt.plot(characteristic(s0, t), t, 'b-', lw=1, alpha=0.5)
-
-#print(lines[:])
+    plt.plot(characteristic(s0, t), t, 'b-', color = 'black', lw=1, alpha=0.5)
 
 intersections = []
 for i in range(np.shape(lines[:])[0] - 1):
     for j in range(np.shape(lines[:])[1] - 1):
-        if np.isclose(lines[i][j], lines[i + 1][j], atol=1e-5):
+        if np.isclose(lines[i][j], lines[i + 1][j], rtol=1e-5):
             intersections.append((lines[i]))
-print(intersections)
+
+df_lines = pd.DataFrame(lines)
+df_lines.to_csv(f'Flash Floods/data/{shape}_channel.csv', index = False)
+
+df_intersections = pd.DataFrame(intersections)
+df_intersections.to_csv(f'Flash Floods/data/{shape}_intersections.csv', index = False)
 
 for i in range(len(intersections)):
-    plt.plot(intersections[i], t, color = 'red', label = f'Intersection {i + 1}')
+    plt.plot(intersections[i], t, label = f'Intersection {i + 1}')
 
 plt.xlabel('Distance along river, $s$ (m)')
 plt.ylabel('Time, $t$ (Hours)')
@@ -60,4 +65,5 @@ plt.title(f'Characteristic Diagram for {shape} Channel')
 plt.xlim(-L, 5 * L)
 plt.legend()
 plt.grid(alpha=0.3)
+plt.savefig(f'Flash Floods/Figures/{shape}_characteristic.pdf')
 plt.show()
