@@ -21,7 +21,9 @@
 \usepackage{amsmath}
 %\usepackage{subfigure}
 \usepackage{subcaption}
+\usepackage{dirtree}
 \usepackage{setspace}
+\usepackage{soul}
 \usepackage[skip=10pt plus1pt]{parskip} %I got rid of indent=30pt to make the paragraphs line up nicer - GI
 \usepackage[top=3cm, bottom=5cm, left=2.5cm, right=2.5cm]{geometry}
 
@@ -54,22 +56,149 @@ box canyon, wedge (closer to what a riverbed is), parabola, etc. investigate eff
     \item plot solutions and find shock
 \end{itemize}
 
-\section{Approxiations/assumptions}
+\section{Approximations/assumptions}
 Using Darcey-Weisbach equations, friction factor is between 0.03-0.08 (https://doi.org/10.1016/j.mex.2022.101669) (Darcey Weisbach is a theoretical model for an open topped channel. We use it as we're generalising - something like the Manning factor could be empirically determined for a specific river.)
 
 Flash flooding commonly happens more where rivers are narrow and steep, so they flow more quickly. It can also occur from small rivers in built-up urban areas, where hard surfaces such as roads and concrete don't let the water drain away into the ground. This leads to surface overflow and can often overwhelm local drainage systems, leading to flash flooding.
 
 $\alpha$ is about 2$\%$
 The world-average river slope is about $2\%$ (i.e. 2m/km), less than $1\%$ is gentle and more than $4\%$ is steep.
-High gradient streams tend to be wedge shaped.
+High gradient streams tend to be wedge shaped. (\textbf{see "classification of natural rivers" by DL Rosgen}
 
 
 Assuming rain distribution is gaussian, is volume of water
 
 We want area the rainfall happened over and how far from the river
-\section{week3 }
-\textbf{important! final version of characteristic_plot.py pushed. feel free to make changes to your local version.}
+\section{week3 (final week before deadline)}
+\textbf{important!} 
+final version of \verb|Flash Floods/scripts/characteristic_plot.py| pushed. feel free to make changes to your local version. added \verb|gradient_calc.py| as well.
+I recommend one installs github and clones the repository into a local working directory in order to avoid file saving errors with the scripts, and can be easily updated with my directory if any changes are necessary. An
+alternate method will be to download the code into a folder called \verb|Flash Floods|, create files \verb|data| and \verb|Figures|. The python files will behave that way. Please contact if you need assistance with code or github. - Linus (cpo1g21@soton.ac.uk)
+Your file structure should look like:
+\dirtree{%
+.1 Flash Floods.
+.2 scripts.
+.3 characteristicplot.py.
+.3 gradientcalc.py.
+.3 godunov.py.
+.2 data.
+.3 contains data files for gradient calculation.
+.2 Figures.
+.3 contains figures saved as pdf as to have high resolution.
+}
+
+next (and last)meeting before submission: Wednesday march 12th \st{4pm}, \textbf{3PM} maths building student centre
+
+\section{Gaby's overleaf so far}
+In our model, we will consider three different cross-sections of a river.  These three shapes will be: the box canyon, wedge-shaped and parabolic shaped, as shown in figure 1.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{2025_02_26 14_09 Office Lens.pdf}
+    \caption{Different shapes of cross-section of river}
+    \label{fig:enter-label}
+\end{figure}
+
+In this model, $t$ is the time, $s$ is the distance along the river and $A(s,t)$ is the cross-sectional area of the bed filled with water.  
+
+We want to write an equation for the conservation of water in the river bed.  Firstly, we will make some assumptions.  We will assume that water is an incompressible fluid and that the water in the river bed is not absorbed into the bed, does not evaporate and is not augmented by additional inflows. A standard conservation equation for water in the river bed can be derived by considering a thin cross sectional slice of river, as seen in figure 2, between $s$ and $s+ds$ where $ds$ is small.  Then the volume of water $dV$ contained in this section is given by
+\begin{equation}
+    dV=A(s,t)ds.
+\end{equation}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{2025_02_26 16_18 Office Lens.pdf}
+    \caption{Cross section of a river bed}
+    \label{fig:enter-label}
+\end{figure}
+The flow rate of water into this section is $Q(s,t)$ and the flow rate out at $s+ds$ is $Q(s+ds,t)$.  As the water is incompressible, the rate of change of the volume of water in our small section of the river bed must equal the flow rate into the section minus the flow rate out of the section.  Hence,
+\begin{align}
+    \frac{d}{dt}(dV) = Q(s,t) - Q(s+ds,t) \approx -\frac{\partial Q}{\partial s}(s,t)ds, \\
+    \implies \frac{\partial A}{\partial t}(s,t)ds \approx -\frac{\partial Q}{\partial s}(s,t)ds.
+\end{align}
+We can cancel the factor of $ds$ on both sides and rearrange to get the following PDE,
+\begin{equation} \label{Conservation equation}
+    \frac{\partial A}{\partial t} + \frac{\partial Q}{\partial s} =0.
+\end{equation}
+The flux $Q$ of water down the river bed can be related to the area-averaged velocity by the expression,
+\begin{equation}
+    Q(s,t) = A(s,t)\Bar{u}(s,t).
+\end{equation}
+Therefore, we can rewrite the conservation equation given by equation \ref{Conservation equation} in the form
+\begin{equation}
+    \frac{\partial A}{\partial t} + \frac{\partial}{\partial s}(A(s,t)\Bar{u}(s,t)) = 0.
+\end{equation}
+
+For turbulant flows, it is possible to characterise the "skin friction" exerted by the sides of the channel in terms of the area-average fluid velocity $\Bar{u}$ in the channel.  We can do this by experimentally measuring skin friction as a function of $\Bar{u}$ as a variety of possible channel surfaces.  We can find that the drag is proportional to $\Bar{u}^2$ and we can use this as motivation for the following law for the shear stress $\tau$ on the walls of a channel,
+\begin{equation}
+    \tau = f\rho \Bar{u}^2,
+\end{equation}
+where $\tau$ measures the friction force per unit area, in the direction opposite to the flow, exerted by the channel walls on the fluid, and $f$ is a friction factor that depends on the properties of the channel wall and channel geometry.  If $l(A)$ is the length of river bed in contact with the flow for the cross-section at $s$, then for vanishingly small section of the river bed between $s$ and $s+ds$ the frictional force exerted by the river bed on the fluid is
+\begin{equation}
+    dF_{grav} = g\sin\alpha \rho Ads.
+\end{equation}
+Assuming that we can neglect the inertia of the flow, we can balance the frictional force with the gravitational force to obtain the following for the shear stress
+\begin{equation}
+    \tau = \frac{g\sin\alpha\rho A}{l(A)}.
+\end{equation}
+If we now substitute for $\tau$, this allows us to obtain an expression for the area-averaged fluid velocity
+\begin{equation}
+    \Bar{U} = \sqrt{\frac{G\sin\alpha A}{fl(A)}}.
+\end{equation}
+Finally, substituting for $\Bar{u}$ in equation \ref{Conservation equation} to obtain the following PDE,
+\begin{equation}\label{PDE}
+    \frac{\partial A}{\partial t} + \sqrt{\frac{g}{f}}\frac{\partial}{\partial s}\left(A^{\frac{3}{2}}\sqrt{\frac{\sin\alpha}{l(A)}}\right) = 0.
+\end{equation}
+
+
+\subsection{Wedge}
+We know that the equation for the area of a triangle is given by 
+\begin{equation}
+    A = \frac{1}{2}ab\sin\theta,
+\end{equation}
+where $a$ and $b$ are the two sides of the wedge that are on either side of the river bed and $\theta$ is the angle between $a$ and $b$.  As the length of the river bed is $l(A)$, the length of $a$ and $b$ is each $\frac{l}{2}$.  Substituting this into our equation for the area, we get
+\begin{equation}
+    A = \frac{l^2\sin\theta}{8}.
+\end{equation}
+Rearranging for $l$, we get:
+\begin{equation}
+    l = \sqrt{\frac{8A}{\sin\theta}}.
+\end{equation}
+Substituting this into our PDE given by equation \ref{PDE}, we get
+\begin{equation}
+    \frac{\partial A}{\partial t} + \sqrt{\frac{g}{f}}\frac{\partial}{\partial s}\left(A^{\frac{3}{2}}\sqrt{\frac{\sin\alpha}{\sqrt{\frac{8A}{\sin\theta}}}}\right) = 0.
+\end{equation}
+We will assume that $\alpha$ and $\theta$ are constant.  We will then get
+\begin{equation}
+    \frac{\partial A}{\partial t} + \sqrt{\frac{g}{f}}\left(\frac{(\sin\alpha)^{\frac{1}{2}}(\sin\theta)^{\frac{1}{4}}}{8^{\frac{1}{4}}}\right) \cdot \frac{5}{4}A^{\frac{1}{4}}\frac{\partial A}{\partial x} = 0
+\end{equation}.
+
+\subsection{Rectangle}
+We know that the equation for a triangle is
+\begin{equation}
+    A = a \cdot b,
+\end{equation}
+where $a$ is the depth and $b$ is the width.  In terms of $l(A)$ and the width of the river $w$, the depth is
+\begin{equation}
+    \frac{1}{2}(l-w).
+\end{equation}
+Hence, the area of the river bed is
+\begin{equation}
+    A=w\cdot \left(\frac{1}{2}(l-w)\right).
+\end{equation}
+Re-arranging for l, we obtain
+\begin{equation}
+    l = \frac{2A+w^2}{w}.
+\end{equation}
+Substituting this into our PDE given by equation \ref{PDE}, we get
+\begin{equation}
+    \frac{\partial A}{\partial t} + \sqrt{\frac{g}{f}}\frac{\partial}{\partial s}\left(A^{\frac{3}{2}}\sqrt{\frac{w\sin\alpha}{2A+w^2}}\right) = 0.
+\end{equation}
+Assuming that $w$ and $\alpha$ are constants, we obtain
+\begin{equation}
+    \frac{\partial A}{\partial t} + \sqrt{\frac{g}{f}}w(\sin\alpha)^{\frac{1}{2}}\left[\frac{3}{2}A^{\frac{1}{2}}(2A+w^2)^{-\frac{1}{2}}+ \frac{A^{\frac{3}{2}}}{\sqrt{2A+w^2}}\right] \frac{\partial A}{\partial x} = 0
+\end{equation}
+
+
 \end{document}
-
-
 
