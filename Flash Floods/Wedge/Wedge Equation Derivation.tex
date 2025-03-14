@@ -1,0 +1,49 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\begin{document}
+
+Finding $A$ in terms of $l$:
+\begin{align}
+    Area = \frac{1}{2}ab\sin(C)
+    \\a = b = \frac{1}{2}l
+    \\\implies A = \frac{1}{8}l^2\sin{\theta}
+    \\\implies l = \sqrt{\frac{8A}{\sin{\theta}}}
+\end{align}
+
+The general form of the equation is:
+\begin{align}
+    \frac{\partial A}{\partial t}+ \sqrt{\frac{g}{f}}\frac{\partial}{\partial x}\left(A^{\frac{3}{2}}\sqrt{\frac{\sin{\alpha}}{l(A)}}\right) = 0
+\end{align}
+
+Substituting in $l(A)$:
+\begin{align}
+    \frac{\partial A}{\partial t}+ \sqrt{\frac{g}{f}}\frac{\partial}{\partial x}\left(A^{\frac{3}{2}} \frac{(\sin{\alpha})^{\frac{1}{2}}}{\left({\frac{8A}{\sin{\theta}}}\right)^\frac{1}{4}} \right) = 0
+\end{align}
+
+\begin{align}
+    \implies \frac{\partial A}{\partial t}+ \sqrt{\frac{g}{f}}\frac{\partial}{\partial x} \left(A^{\frac{5}{4}} \frac{\sin{\alpha}^{\frac{1}{2}}\sin{\theta}^\frac{1}{4}}{8^\frac{1}{4}} \right)= 0
+\end{align}
+
+\begin{align}
+    \implies \frac{\partial A}{\partial t}+ \frac{5}{4}\sqrt{\frac{g\sin{\alpha}}{f}\sqrt{\frac{\sin{\theta}}{8}}}A^\frac{1}{4} \frac{\partial A}{\partial x} = 0
+\end{align}
+
+\begin{align}
+    \frac{\partial c}{\partial t} + v(c) \frac{\partial c}{\partial x} = 0
+    \\\implies v(c) = \frac{dx}{dt} = \frac{5}{4}\sqrt{\frac{g\sin{\alpha}}{f}\sqrt{\frac{\sin{\theta}}{8}}} A^\frac{1}{4}
+\end{align}
+
+\begin{align}
+    x = \frac{5}{4}\sqrt{\frac{g\sin{\alpha}}{f}\sqrt{\frac{\sin{\theta}}{8}}} \int A^\frac{1}{4} dt
+\end{align}
+
+$x$ doeasn't explicitly depend on $t$, so we get:
+\begin{align}
+    x = \frac{5}{4}\sqrt{\frac{g\sin{\alpha}}{f}\sqrt{\frac{\sin{\theta}}{8}}} A^\frac{1}{4} t + P
+\end{align}
+Where $A$ can be chosen as some constant area and $P$ is the constant of integration that determines which characteristic curve is being investigated.
+
+\end{document}

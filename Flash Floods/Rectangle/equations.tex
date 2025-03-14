@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\title{Flash Floods}
+\author{Benjamin Crossland}
+\date{March 2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+% Ask if we need to derive main equation here.
+\begin{equation}
+\label{main equation}
+    \frac{\partial A}{\partial t} + \sqrt {\frac{g}{f}} \frac{\partial}{\partial s}\left( A^{\frac{3}{2}} \sqrt{\frac{\sin \alpha} {l(A)}} \, \right) = 0.
+\end{equation}
+Where:
+\begin{itemize}
+    \item $A$ = Cross-sectional area of bed filled with water
+    \item $t$ = Time
+    \item $g$ = Gravitational constant
+    \item $f$ = Friction coefficient
+    \item $s$ = Distance along river
+    \item $\alpha$ = Angle of inclination of the river bed
+    \item $l(A)$ = Perimeter of bed wetted by river
+\end{itemize}
+
+\section{Cross-sections}
+It is clear from equation \ref{main equation} that we need to derive the relationship between the perimeter of the cross section of the riverbed and the river bed and the area of the cross section of the riverbed filled with water. This obviously varies with the shape of the riverbed so we have decided to consider an in-exhaustive list of three types of river bed in which, hopefully, most rivers will be able to be categorised into. These are a rectangular riverbed, a wedge shaped riverbed and a riverbed in the shape of a parabola: 
+%insert pictures of riverbed here 
+
+\subsection{The rectangular riverbed}
+
+It is intuitive that to calculate the area of the riverbed we would need both its depth and width. However, as we want to make use of the variable $l$ we need only pick one, which we chose to be width $w$. We then have that the depth of the riverbed is $\frac{1}{2}(l-w)$. We then get that: 
+\begin{align}
+A = \frac{1}{2}w(l-w)\\
+\implies l = \frac{2A+w^2}{w} \label{perimeter rectangle}
+\end{align}
+
+%% Then get all other equations for other riverbeds 
+
+\section{Characteristic Equations for PDEs}
+If we assume that for each $l$ corresponding for the different riverbeds, we can manipulate equation [\ref{main equation}] into the form: 
+\begin{equation}
+\label{generalised PDE}
+    \frac{\partial A}{\partial t} + v(A) \frac{\partial A}{\partial s} = 0.
+\end{equation}
+If we now define the characteristic curves as:
+\begin{equation}
+\label{def of char}
+    \frac{ds}{dt} = v(A),
+\end{equation}
+we get from equation [\ref{generalised PDE}]:
+\begin{align}
+    \frac{\partial A}{\partial t} + \frac{ds}{dt} \frac{\partial A}{\partial s} = 0\\
+    \implies \frac{\partial A}{\partial t} +  \frac{\partial A}{\partial t} = 0 \\
+    \implies \frac{\partial A}{\partial t} = 0.
+\end{align}
+We can hence interpret that along curves defined by equation [\ref{def of char}] we get that $A$ is constant with respect to time. We can now solve equation [\ref{def of char}] (as v is a function of A and is therefore also constant along characteristics) to get: 
+\begin{equation}
+    \label{solution of char curves}
+    v(A)t + c = s,
+\end{equation}
+where $c$ is some constant. It is then clear that this integration constant $c$ represents some sort of initial condition that depends on the value of $A$ at some section of river $s$ at $t=0$. We then get a graph consisting of straight lines that differ in gradient which should give us insight into the nature of our PDE. However, $V(A)$ will be different for each cross section, so we will consider each in turn now. 
+\subsection{The rectangular cross section case}
+Substituting our expression for $l(A)$ in equation [\ref{perimeter rectangle}] into equation [\ref{main equation}] we get: 
+\begin{align}
+    \frac{\partial A}{\partial t} + \sqrt {\frac{g}{f}} \frac{\partial}{\partial s}\left( A^{\frac{3}{2}} \sqrt{\frac{w\sin \alpha} {2A +w^2}} \, \right) = 0 \\
+    \implies \frac{\partial A}{\partial t} + \sqrt {\frac{g \,w\,\sin(\alpha)}{f}} \frac{\partial A}{\partial s}\left(\frac{3A^{\frac{1}{2}}}{2\sqrt{2A +w^2}} - (2A + w^2)^{-\frac{3}{2}}\, \right) = 0.
+\end{align}
+Now, comparing this final equation to equation [\ref{generalised PDE}] we can see that:
+\begin{equation}
+   V(A) =  \sqrt {\frac{g \,w\,\sin(\alpha)}{f}} \left(\frac{3A^{\frac{1}{2}}}{2\sqrt{2A +w^2}} - (2A + w^2)^{-\frac{3}{2}}\, \right),
+\end{equation}
+for the rectangular case. We can now plot the characteristic equations for the rectangular case like so: 
+%%Insert plot here. 
+
+\end{document}
+

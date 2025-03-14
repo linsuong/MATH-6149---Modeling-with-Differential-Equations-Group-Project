@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{physics}
+
+
+\begin{document}
+\section{Introduction}
+We begin with $y=ax^2$ as the equation of the parabola where a is a constant defined in specifying the cross section shape.
+Arc length for a single variable function is given by $L=\int_{x_1}^{x_2} \sqrt{1+(dy/dx)^2} dx$ which becomes $L=\int_{x_1}^{x_2} \sqrt{1+4a^2x^2} dx$, where $x_2$ is the point of intersection for positive x made by a horizontal line, and $x_1$ is the negative. $x_2=-x_1$.
+Carrying out this integral results in \[
+L=x_2\sqrt{1+4a^2x_2^2}+\frac{1}{4a} \ln(\frac{\sqrt{1+4a^2x_2^2}+2ax_2}{\sqrt{1+4a^2x_2^2}-2ax_2}).
+\]
+To put in terms of A we find $A=ax_2^2(2x_2)-\int_{x_1}^{x_2}ax^2dx$, and follow through the calculation until we reach \[
+A=\frac{4}{3}a x_2^3.
+\]
+Then we can rearrange for $x_2=\sqrt[3]{\frac{3A}{4a}}$ and substitute into L to get L(A),\[
+L(A)=\sqrt[3]{\frac{3A}{4a}} \sqrt{1+(6a^2A)^{2/3}}+\frac{1}{4a} \ln(\frac{\sqrt{1+(6a^2A)^{2/3}}+\sqrt[3]{6a^2A}}{\sqrt{1+(6a^2A)^{2/3}}-\sqrt[3]{6a^2A}}).
+\]
+Inserting into the established PDE,\[
+0=\pdv{A}{t}+\sqrt{\frac{g}{f}}\pdv{}{s} \left( A^{3/2} \sqrt{\frac{\sin{\alpha}}{\sqrt[3]{\frac{3A}{4a}} \sqrt{1+(6a^2A)^{2/3}}+\frac{1}{4a} \ln(\frac{\sqrt{1+(6a^2A)^{2/3}}+\sqrt[3]{6a^2A}}{\sqrt{1+(6a^2A)^{2/3}}-\sqrt[3]{6a^2A}})}} \right). 
+\]
+After the differentiation we are left with %\[
+%0=\pdv{A}{t}+\sqrt{\frac{g\sin{\alpha}}{f}}  \frac{((\beta_1A^{2/3}+\beta_2A^{1/3}+\beta_3)A+\beta_4CA^{2/3})\ln(\abs{\frac{C+B}{C-B}})+(\beta_3A^{1/3}+1008a^3C)A^2+(\beta_6A^{2/3}+\beta_7C^3A^{1/2}+\beta_8)A}{\beta_9(B+C)^2CA^{1/6}(DC+\frac{1}{4a}\ln(\abs{\frac{C+B}{C-B}}))^{3/2}}
+%\pdv{A}{s},
+%\]
+\begin{equation}
+    \makebox[\displaywidth]{$\displaystyle
+      0 =
+      \pdv{A}{t}+\sqrt{\frac{g\sin{\alpha}}{f}} \pdv{A}{s}
+        \frac{
+          \Bigl( (\beta_1A^{2/3}+\beta_2A^{1/3}+\beta_3)A+\beta_4CA^{2/3})\ln(\abs{\frac{C+B}{C-B}}) \Bigr)
+          + \Bigl( (\beta_3A^{1/3}+1008a^3C)A^2 \Bigr)
+          + \Bigl( (\beta_6A^{2/3}+\beta_7C^3A^{1/2}+\beta_8)A \Bigr)
+        }{
+          \Bigl(\beta_9(B+C)^2CA^{1/6}(DC+\frac{1}{4a}\ln(\abs{\frac{C+B}{C-B}}))^{3/2} \Bigr)
+        }
+    $}
+\end{equation}
+where we use a set of shorthand variables and constants to more clearly state the equation, to a mixed degree of success.
+Removing v(A) from the PDE,%\[
+%v(A)= \frac{((\beta_1A^{2/3}+\beta_2A^{1/3}+\beta_3)A+\beta_4CA^{2/3})\ln(\abs{\frac{C+B}{C-B}})+(\beta_3A^{1/3}+1008a^3C)A^2+(\beta_6A^{2/3}+\beta_7C^3A^{1/2}+\beta_8)A}{\beta_9(B+C)^2CA^{1/6}(DC+\frac{1}{4a}\ln(\abs{\frac{C+B}{C-B}}))^{3/2}}
+%\]
+\begin{equation}
+    \makebox[\displaywidth]{$\displaystyle
+      v(A) =
+      \sqrt{\frac{g\sin{\alpha}}{f}}
+        \frac{
+          \Bigl( (\beta_1A^{2/3}+\beta_2A^{1/3}+\beta_3)A+\beta_4CA^{2/3})\ln(\abs{\frac{C+B}{C-B}}) \Bigr)
+          + \Bigl( (\beta_3A^{1/3}+1008a^3C)A^2 \Bigr)
+          + \Bigl( (\beta_6A^{2/3}+\beta_7C^3A^{1/2}+\beta_8)A \Bigr)
+        }{
+          \Bigl(\beta_9(B+C)^2CA^{1/6}(DC+\frac{1}{4a}\ln(\abs{\frac{C+B}{C-B}}))^{3/2} \Bigr)
+        }
+    $}
+\end{equation}
+\begin{itemize}
+    \item $B=\sqrt[3]{6a^2A}$
+    \item $C=\sqrt{1+(6a^2A)^{2/3}}$
+    \item $D=\sqrt[3]{\frac{3A}{4a}}$
+    \item $\beta_1=\sqrt[3]{3^{11}4^4a^7}=\sqrt[3]{45349632}a^{7/3}$
+    \item $\beta_2=2\sqrt[3]{4\cdot3^86^2a^5}=2\sqrt[3]{944784}a^{5/3}$
+    \item $\beta_3=2a\sqrt[3]{3^84\cdot6}=108a$
+    \item $\beta_4=\sqrt[3]{3^84a}=\sqrt[3]{26244}a^{1/3}$
+    \item $\beta_5=28\sqrt[3]{6^7a^{11}}=28\sqrt[3]{279936}a^{11/3}$
+    \item $\beta_6=(6^{5/3}46-2\cdot3^{5/3}4^{4/3})a^{7/3}=(46\sqrt[3]{7776}-2\sqrt[3]{62208})a^{7/3}\simeq832.0857a^{7/3}$
+    \item $\beta_7=(6^{4/3}32-\sqrt[3]{3^24^46^2})a^{5/3}=(32\sqrt[3]{1296}-\sqrt[3]{82944})a^{5/3}\simeq 305.2763a^{5/3}$
+    \item $\beta_8=84a$
+    \item $\beta_9=2\sqrt[3]{3^54^4a^4}=2\sqrt[3]{62208}a^{4/3}$
+\end{itemize}
+
+
+\end{document}
