@@ -12,13 +12,13 @@ L = 0.5 #std dev
 
 def wave_speed(A):
     if shape == 'Rectangle':
-        alpha = np.arctan(0.02) * np.pi /180
+        alpha = np.arctan(0.02)
         w = 10.0  # width of the channel (m)
 
         return (3/2) * np.sqrt(g * w * np.sin(alpha)/f) * ((3/2)* np.sqrt(A/(2*A + w**2)) - ((2*A + w**2) ** (-3/2)))
         
     if shape == 'Wedge':
-        alpha = np.arctan(0.08) * np.pi /180
+        alpha = np.arctan(0.08)
         theta = np.pi/6
         
         return (5/4) * np.sqrt((g * np.sin(alpha)/f) * np.sqrt(np.sin(theta)/8)) * (A ** (1/4))
