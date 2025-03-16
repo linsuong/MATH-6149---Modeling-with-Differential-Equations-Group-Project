@@ -199,6 +199,55 @@ Assuming that $w$ and $\alpha$ are constants, we obtain
     \frac{\partial A}{\partial t} + \sqrt{\frac{g}{f}}w(\sin\alpha)^{\frac{1}{2}}\left[\frac{3}{2}A^{\frac{1}{2}}(2A+w^2)^{-\frac{1}{2}}+ \frac{A^{\frac{3}{2}}}{\sqrt{2A+w^2}}\right] \frac{\partial A}{\partial x} = 0
 \end{equation}
 
+\section{parabola (linus)}
+please check for any errors:
+\begin{equation}
+    \begin{split}
+        L(a)&=\int_0^wdx\sqrt{1 + (2ax)^2}
+        \\ &\text{substitute }u=2ax\text{, }du=2a\cdot dx
+        \\&=\frac{1}{2a}\int_0^{2aw}du\sqrt{1 + u^2}
+        \\ &\text{substitute }u=\tan(\theta)\text{, }du=\sec^2(\theta)\cdot d\theta\text{ , }1 + \tan^2(\theta) = sec^2(\theta)
+        \\&=\frac{1}{2a}\int_0^{\arctan{(2aw)}} d\theta \cdot \sec^3(\theta)
+        \\&=\frac{1}{2a}\left[\frac{1}{2}\sec{x}\tan{x}\right] _0^{\arctan(2aw)}+ \frac{1}{2}\int_0^{\arctan(2aw)} dx\sec{x}
+        \\&= \frac{1}{4a}\left[\sec{x}\tan{x} + \ln{|\sec(x)+\tan(x)|}\right]_0^{\arctan(2aw)}  
+        \\&=\frac{1}{4a}(2aw\cdot\sec{(2aw)}+ \ln{|\sec({\tan(2aw)}) + 2aw|} - \ln{1})
+    \end{split}
+\end{equation}
 
+\begin{equation}
+    \begin{split}
+        A &= (2w)(aw^2) - 2a\int_0^w dx \cdot x^2
+        \\ &=2aw^3 - \frac{2aw^3}{3}
+        \\ &=\frac{4aw^3}{3}
+    \end{split}
+\end{equation}
+
+todo: simplify for arc length and then express arc length in terms of area, then differentiate
+
+I would use L rather than L(a) as it is a physical parameter, the area calculation and most of the arc length calculation are good, the last step in arc length seems odd though, and I think you missed the factor of two for symmetry. In the sec terms of the final line I get arguments of atan(2aw), where you have tan(2aw) in one, but 2aw in the other. I assume that w is the 1/2 width of the full parabola at water height.
+
+I have made corrections:
+\begin{equation}
+    \begin{split}
+        l&=2\int_0^wdx\sqrt{1 + (2ax)^2}
+        \\ &\text{substitute }u=2ax\text{, }du=2a\cdot dx
+        \\&=\frac{1}{a}\int_0^{2aw}du\sqrt{1 + u^2}
+        \\ &\text{substitute }u=\tan(\theta)\text{, }du=\sec^2(\theta)\cdot d\theta\text{ , }1 + \tan^2(\theta) = sec^2(\theta)
+        \\&=\frac{1}{a}\int_{\arctan(0)}^{\arctan{(2aw)}} d\theta \cdot \sec^3(\theta)
+        \\&=\frac{1}{a}\left[\frac{1}{2}\sec{x}\tan{x}\right]_{\arctan(0)}^{\arctan(2aw)}+ \frac{1}{2}\int_{\arctan(0)}^{\arctan(2aw)} dx\sec{x}
+        \\&= \frac{1}{2a}\left[\sec{x}\tan{x} + \ln{|\sec(x)+\tan(x)|}\right]_{\arctan(0)}^{\arctan(2aw)}
+        \\&= \frac{1}{2a}(\sec(\arctan(2aw))\tan(\arctan(2aw)) + \ln{|\sec(\arctan(2aw))+\tan(\arctan(2aw))|})
+        \\&=\frac{1}{2a}(2aw\sqrt{1 + (2aw)^2}+ \ln{|\sqrt{1 + (2aw)^2} + 2aw|})
+    \end{split}
+\end{equation}
+Knowing that:
+\begin{equation}
+    \begin{split}
+         \int \sec^3(x)dx &= \int \sec^2(x)\sec(x)dx
+         \\&=\sec(x)\tan(x)-\int\sec(x)(\sec^2(x)-1)dx
+         \\&=\sec(x)\tan(x)-\int\sec^3(x)dx+\int\sec(x)dx
+         \\&=\frac{1}{2}\left(\sec(x)\tan(x)+\ln{|\sec(x)+\tan(x)|}\right) + C
+    \end{split}
+\end{equation}
 \end{document}
 
