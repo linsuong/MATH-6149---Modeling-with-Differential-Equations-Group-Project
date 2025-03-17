@@ -57,7 +57,7 @@ box canyon, wedge (closer to what a riverbed is), parabola, etc. investigate eff
 \end{itemize}
 
 \section{Approximations/assumptions}
-Using Darcey-Weisbach equations, friction factor is between 0.03-0.08 (https://doi.org/10.1016/j.mex.2022.101669) (Darcey Weisbach is a theoretical model for an open topped channel. We use it as we're generalising - something like the Manning factor could be empirically determined for a specific river.)
+Using Darcey-Weisbach equations, friction factor is between 0.03-0.08 (Friction factor evaluation in tidal rivers and estuaries https://doi.org/10.1016/j.mex.2022.101669)  (Darcey Weisbach is a theoretical model for an open topped channel. We use it as we're generalising - something like the Manning factor could be empirically determined for a specific river.)
 
 Flash flooding commonly happens more where rivers are narrow and steep, so they flow more quickly. It can also occur from small rivers in built-up urban areas, where hard surfaces such as roads and concrete don't let the water drain away into the ground. This leads to surface overflow and can often overwhelm local drainage systems, leading to flash flooding.
 
@@ -65,6 +65,8 @@ $\alpha$ is about 2$\%$
 The world-average river slope is about $2\%$ (i.e. 2m/km), less than $1\%$ is gentle and more than $4\%$ is steep.
 High gradient streams tend to be wedge shaped. (\textbf{see "classification of natural rivers" by DL Rosgen}
 
+
+Mass of a cumulus cloud with volume $1$km$^3$
 
 Assuming rain distribution is gaussian, is volume of water
 
@@ -199,21 +201,74 @@ Assuming that $w$ and $\alpha$ are constants, we obtain
     \frac{\partial A}{\partial t} + \sqrt{\frac{g}{f}}w(\sin\alpha)^{\frac{1}{2}}\left[\frac{3}{2}A^{\frac{1}{2}}(2A+w^2)^{-\frac{1}{2}}+ \frac{A^{\frac{3}{2}}}{\sqrt{2A+w^2}}\right] \frac{\partial A}{\partial x} = 0
 \end{equation}
 
-\section{parabola (linus)}
-please check for any errors:
+\section{Linus' Derivation of areas and perimeters of cross-sections}
+\subsection{Rectangle}
+For the rectangular channel of width $w$ and height of water $h$ (Fig. \ref{fig:cross-sections}), the area and perimeter respectively are abcd:
 \begin{equation}
     \begin{split}
-        L(a)&=\int_0^wdx\sqrt{1 + (2ax)^2}
-        \\ &\text{substitute }u=2ax\text{, }du=2a\cdot dx
-        \\&=\frac{1}{2a}\int_0^{2aw}du\sqrt{1 + u^2}
-        \\ &\text{substitute }u=\tan(\theta)\text{, }du=\sec^2(\theta)\cdot d\theta\text{ , }1 + \tan^2(\theta) = sec^2(\theta)
-        \\&=\frac{1}{2a}\int_0^{\arctan{(2aw)}} d\theta \cdot \sec^3(\theta)
-        \\&=\frac{1}{2a}\left[\frac{1}{2}\sec{x}\tan{x}\right] _0^{\arctan(2aw)}+ \frac{1}{2}\int_0^{\arctan(2aw)} dx\sec{x}
-        \\&= \frac{1}{4a}\left[\sec{x}\tan{x} + \ln{|\sec(x)+\tan(x)|}\right]_0^{\arctan(2aw)}  
-        \\&=\frac{1}{4a}(2aw\cdot\sec{(2aw)}+ \ln{|\sec({\tan(2aw)}) + 2aw|} - \ln{1})
+        A &= wh
+        \\\text{Perimeter}&=2h + w
+        \\l(A) &= w + \frac{2A}{w}
+        \\\implies l'(A) &= \frac{2}{w}
     \end{split}
 \end{equation}
 
+\subsection{Wedge}
+\label{appendix:wedge}
+\begin{align}
+    A &= \frac{1}{2}ab\sin(C) \notag
+    \\&a = b = \frac{1}{2}l \notag
+    \\A &= \frac{1}{8}l^2\sin{\theta}
+\end{align}
+With a perimeter of 
+\begin{equation}
+    l(A) = \sqrt{\frac{8A}{\sin{\theta}}}
+\end{equation}
+
+Giving a first order derivative:
+\begin{equation}
+    \begin{split}
+          l'(A) &= \frac{1}{2}\frac{8}{\sin(\theta)}\left(\frac{8A}{\sin(\theta)}\right)^{1/2}
+          \\&=\frac{\sqrt{8A\sin(\theta)}}{2\sin(\theta)}
+    \end{split}
+\end{equation}
+
+\subsection{Semi-circular}
+\label{appendix:semi-circular}
+For a semi circular cross section that has a radius $R$ and $\theta$ is the central angle subtended by the water surface. We need to consider an expression for cases where the water is not completely full. As the water falls below the top of the river surface, a triangle is formed, which the area can be obtained by:
+\begin{equation}
+    A = \frac{R^2}{2} \sin\theta
+\end{equation}
+
+Therefore, the area of the cross section of water is:
+\begin{align}
+    A &=\frac{R^2 \theta}{2} - \frac{R^2}{2}\sin\theta \\
+      &= \frac{R^2}{2}\left(\theta - \sin\theta\right) \notag
+\end{align}
+And the perimeter can be easily obtained:
+\begin{align}
+    l =& R\theta \\
+        =& \sqrt{\frac{2A}{\left(\theta - \sin\theta\right)}}\theta \notag
+\end{align}
+
+And the derivative of $l(A)$ with respect to $A$ is:
+\begin{equation}
+    \begin{split}
+         l'(A) &= \frac{\frac{1}{2}\frac{2}{\theta-\sin{\theta}}}{\sqrt{\frac{2A}{\theta-\sin{\theta}}}}\theta
+        \\&= \frac{\theta}{(\theta-\sin{\theta})}\sqrt{\frac{2A}{\theta-\sin{\theta}}}
+    \end{split}
+\end{equation}
+
+\subsection{Parabola}
+\label{appendix:parabola}
+We can model a parabolic cross section by using the simple formula $y = ax^2$ (Fig. \ref{fig:cross-sections}(d)). The arc length and area can be obtained using simple derivation methods.
+
+For a parabola, the arc length can be obtained using:
+\begin{equation}
+    L(a) = \int_0^a\sqrt{1 + y'(x)^2}dx
+\end{equation}
+
+For a cross section of width $2w$, the height of water will be $y(w) = aw^2$, giving a cross sectional area of:
 \begin{equation}
     \begin{split}
         A &= (2w)(aw^2) - 2a\int_0^w dx \cdot x^2
@@ -222,16 +277,14 @@ please check for any errors:
     \end{split}
 \end{equation}
 
-todo: simplify for arc length and then express arc length in terms of area, then differentiate
-
-I would use L rather than L(a) as it is a physical parameter, the area calculation and most of the arc length calculation are good, the last step in arc length seems odd though, and I think you missed the factor of two for symmetry. In the sec terms of the final line I get arguments of atan(2aw), where you have tan(2aw) in one, but 2aw in the other. I assume that w is the 1/2 width of the full parabola at water height.
-
-I have made corrections:
+and the arc length:
 \begin{equation}
     \begin{split}
         l&=2\int_0^wdx\sqrt{1 + (2ax)^2}
+        \\
         \\ &\text{substitute }u=2ax\text{, }du=2a\cdot dx
         \\&=\frac{1}{a}\int_0^{2aw}du\sqrt{1 + u^2}
+        \\
         \\ &\text{substitute }u=\tan(\theta)\text{, }du=\sec^2(\theta)\cdot d\theta\text{ , }1 + \tan^2(\theta) = sec^2(\theta)
         \\&=\frac{1}{a}\int_{\arctan(0)}^{\arctan{(2aw)}} d\theta \cdot \sec^3(\theta)
         \\&=\frac{1}{a}\left[\frac{1}{2}\sec{x}\tan{x}\right]_{\arctan(0)}^{\arctan(2aw)}+ \frac{1}{2}\int_{\arctan(0)}^{\arctan(2aw)} dx\sec{x}
@@ -247,6 +300,53 @@ Knowing that:
          \\&=\sec(x)\tan(x)-\int\sec(x)(\sec^2(x)-1)dx
          \\&=\sec(x)\tan(x)-\int\sec^3(x)dx+\int\sec(x)dx
          \\&=\frac{1}{2}\left(\sec(x)\tan(x)+\ln{|\sec(x)+\tan(x)|}\right) + C
+    \end{split}
+\end{equation}
+and
+\begin{equation}
+    \sec(\tan(x)) = \sqrt{1+x^2}
+\end{equation}
+Expressing the length in terms of the area, since:
+\begin{equation}
+    a = \frac{3A}{4w^3} \implies 2aw = \frac{3A}{2w^2}
+\end{equation}
+
+\begin{equation}
+    l(A) = \frac{2w^3}{3A}\left[\frac{3A}{2w^2}\sqrt{1 + \left(\frac{3A}{2w^2}\right)^2}+\ln\left|\sqrt{1 + \left(\frac{3A}{2w^2}\right)^2} + \frac{3A}{2w^2}\right|\right]
+\end{equation}
+
+To have an easier time finding the derivative, one can express the equation above in the simple form:
+\begin{equation}
+    \alpha(\beta + \ln{\gamma}) = \alpha'(\beta + \ln(\gamma)) + \alpha\left(\beta' + \frac{\gamma'}{\gamma}\right)
+\end{equation}
+The expression for $\alpha'$ is easy to obtain,
+\begin{equation}
+    \alpha' = -\frac{2w^3}{3A^2}
+\end{equation}
+$\beta$ is in the form of $x\sqrt{1 + x^2}$, where the derivative is:
+\begin{equation}
+    \begin{split}
+        f(x) &= x\sqrt{1 + x^2}
+        \\
+        f'(x) &= \frac{1 + 2x^2}{\sqrt{1 + x^2}}
+    \end{split}
+\end{equation}
+Using $x = \frac{3A}{2w^2}$ and the chain rule $\frac{d\beta}{dA} = \frac{d\beta}{dx}\cdot\frac{dx}{dA}$, we can conclude:
+\begin{equation}
+    \beta' = \frac{1 + 2\left(\frac{3A}{2w^2}\right)^2}{\sqrt{1 + \left(\frac{3A}{2w^2}\right)^2}}\frac{3}{2w^2}
+\end{equation}
+
+The final part of the derivative:
+\begin{equation}
+    \begin{split}
+        \gamma' &= \frac{1}{2}\left(1 + \left(\frac{3A}{2w^2}\right)^2\right)^{-1/2}\cdot2\left(\frac{3A}{2w^2}\right)\left(\frac{3}{2w^2}\right)
+        \\&=\frac{9A}{4w^4\sqrt{1 + \left(\frac{3A}{2w^2}\right)^2}}
+    \end{split}
+\end{equation}
+And the first order derivative of $l(A)$ for the parabola is:
+\begin{equation}
+    \begin{split}
+        l'(A) &= -\frac{2w^3}{3A^2}\cdot l(A) +  \frac{2w^3}{3A}\left[\frac{1 + 2\left(\frac{3A}{2w^2}\right)^2}{\sqrt{1 + \left(\frac{3A}{2w^2}\right)^2}}\frac{3}{2w^2} +  \frac{9A}{4w^4\sqrt{1 + \left(\frac{3A}{2w^2}\right)^2}}\right]
     \end{split}
 \end{equation}
 \end{document}
