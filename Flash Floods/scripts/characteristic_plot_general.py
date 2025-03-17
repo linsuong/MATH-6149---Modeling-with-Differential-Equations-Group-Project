@@ -18,7 +18,9 @@ def wave_speed(A):
         theta = np.pi/3
         
         l = np.sqrt((8 * A)/np.sin(theta))
+
         l_prime = 2 / (np.sqrt(2 * A * np.sin(theta)))
+
         
        #return (5/4) * np.sqrt((g * np.sin(alpha)/f) * np.sqrt(np.sin(theta)/8)) * (A ** (1/4))
     
@@ -27,6 +29,7 @@ def wave_speed(A):
         theta = np.pi/3
         
         l = np.sqrt((2 * A)/(theta - np.sin(theta))) * theta
+
         l_prime = theta/(np.sqrt(2 * A * (theta - np.sin(theta))))
     
     if shape == 'Parabola':
@@ -100,6 +103,7 @@ if __name__ == '__main__':
     g = 9.81
     f = 0.05
 
+
     A_L = 3
     V = 5000
 
@@ -116,3 +120,4 @@ if __name__ == '__main__':
     s = np.linspace(-5 * sigma, 5 * sigma + mean, 100)
 
     plot_characteristics(t, s, intersections = "False")
+

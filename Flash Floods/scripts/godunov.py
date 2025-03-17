@@ -100,11 +100,12 @@ if __name__ == "__main__":
     # Constants
     g = 9.81
     f = 0.1
-
+    
     A_L = 3
     V = 5000
 
     mean = 0
+
     sigma = 100
 
     shape = 'Rectangle'
@@ -117,3 +118,4 @@ if __name__ == "__main__":
 
     #plt.close('all')
     godunov(t, t_end, s, N, L)
+
