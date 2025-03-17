@@ -11,18 +11,16 @@ def l(A):
         return np.sqrt((8 * A) / (np.sin(theta)))
     
     if shape == 'Semi':
-        theta = np.pi / 3
+        theta = np.pi/3
+        
         return np.sqrt((2 * A) / (theta - np.sin(theta))) * theta
 
     if shape == 'Parabola':
-        a = 5
         w = 10
         
-        var_0 = np.sqrt(1 + (3 * A * a * w))
-        var_1 = (3 * A)/ (w **2)
-        var_2 = (3 * A * (w **2))/2
+        var_0 = (3 * A) / (2 * (w ** 2))
         
-        return var_2 * (var_1 * var_0 + np.ln(1 + var_0 + var_1)) 
+        return ((2 * (w ** 3))/(3 * A)) * (var_0 * np.sqrt(1 + (var_0 ** 2)) + np.log(np.abs(np.sqrt(1 + (var_0 ** 2)) + var_0))) 
             
 def u_bar(A):
     if shape == 'Rectangle':
@@ -32,13 +30,17 @@ def u_bar(A):
         alpha = np.arctan(0.08)  # Correctly left in radians
         
     if shape == 'Semi':
-        alpha = np.arctan()
+        alpha = np.arctan(0.2)
+    
+    if shape == 'Parabola':
+        alpha = np.arctan(0.1)
+        
     return np.sqrt((g * np.sin(alpha) * A) / (f * l(A)))
 
 
 def int_cond(s):
     norm = np.sqrt(2 * np.pi * (sigma ** 2))
-    return (V / norm) * np.exp(-((s - b) ** 2) / (sigma ** 2)) + A_L
+    return (V / norm) * np.exp(-((s - mean) ** 2) / (sigma ** 2)) + A_L
 
 def Q(A):
     return A * u_bar(A)
@@ -86,11 +88,11 @@ def godunov(t, t_end, x, N, L):
     #plt.vlines(b + sigma, A_L, 40)
     plt.xlabel('Distance along river, $s$', fontsize=20)
     plt.ylabel('Cross sectional area, $A$', fontsize=20)
-    plt.xlim(0, 5 * sigma + b)
+    plt.xlim(0, 5 * sigma + mean)
     plt.legend()
     plt.tick_params(axis='both', which='major', labelsize=20)
     plt.title('Evolution of cross sectional area, $A$ across length for different $t$', fontsize=20)
-    #plt.savefig(f'/Users/linusong/Repositories/Modeling-with-Differential-Equations---Individual-Project/Figures/{shape}_godunov.pdf')
+    plt.savefig(f'Figures/{shape}_godunov.pdf')
     plt.show()
 
 ##############################################################################################################
@@ -98,21 +100,22 @@ if __name__ == "__main__":
     # Constants
     g = 9.81
     f = 0.1
-
-    A_L = 10
+    
+    A_L = 3
     V = 5000
 
-    b = 0
+    mean = 0
+
     sigma = 100
 
     shape = 'Rectangle'
 
-    # Discretization
-    N = 1000
-    L = 1
+    N = 100
+    L = 10
     t = 0
     t_end = 100
-    x = np.linspace(0, 1000, N)
+    s = np.linspace(0, 5 * sigma + mean, N)
 
     #plt.close('all')
-    godunov(t, t_end, x, N, L)
+    godunov(t, t_end, s, N, L)
+
