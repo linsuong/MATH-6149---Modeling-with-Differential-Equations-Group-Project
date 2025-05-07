@@ -33,9 +33,47 @@
 \maketitle
 \section{description}
 
+Heat Equation:
+\begin{align} \label{Heat Equation}
+    \rho c_p \frac{\partial T}{\partial t} = \frac{\partial}{\partial x} \left(k \frac{\partial T}{\partial x}\right) + G
+\end{align}
 
-\begin{equation}
+Non-dimensional Heat Equation:
+\begin{equation} \label{Non-dimensional heat equation}
     \frac{\partial \Tilde{T}}{\partial \Tilde{t}} = \frac{1}{Da}\frac{\partial^2 \Tilde{T}}{\partial \Tilde{x}^2} + e^{\Tilde{T}}
 \end{equation}
+
+Damkohler number (confirmed by Toby):
+\begin{align} \label{Damkohler Number}
+    D_a = \frac{k_0 \Delta H L^2}{kT_0 e^{\beta}} \frac{E_a}{R_gT_0} 
+\end{align}
+
+
+Done:
+-steady state solution for 1D flat model; conclusion (temporary): no steady state soln as c=0; maybe do limit? \\
+
+$\tilde{x} > 0$
+\begin{align} \label{Steady State Solution}
+    \frac{1}{\sqrt{c}} \log\left| \frac{\sqrt{-2e^{\tilde{T}}D_a +c}\pm\sqrt{c}}{\sqrt{-2e^{\tilde{T}}D_a +c}\mp\sqrt{c}} \right| = \tilde{x} + a
+\end{align}
+
+where the top case applies to $x>0$, and the bottom case applies to $x<0$.
+
+
+C in terms of $\tilde{T}_0$, where $\tilde{T}_0$ is $\tilde{T}$ at $\tilde{x} = 0$. This would be constant for a steady state, as $\frac{\partial \tilde{T}}{\partial \tilde{t}} = 0$.
+\begin{align}
+    c = 2e^{\tilde{T}_0}D_a
+\end{align}
+
+\begin{align}
+    a = \frac{1}{\sqrt{2e^{\tilde{T}_0}D_a}} \log\left| \frac{\sqrt{e^{\tilde{T}_0}-1} \mp \sqrt{e^{\tilde{T}_0}}}{\sqrt{e^{\tilde{T}_0}-1} \pm \sqrt{e^{\tilde{T}_0}}} \right| \mp 1,
+\end{align}
+where the top case applies to $x>0$, and the bottom case applies to $x<0$.
+
+-"1D" cylinder assuming axisymmetric temperature - look at steady state sols\\
+
+
+To do:
+
 
 \end{document}
