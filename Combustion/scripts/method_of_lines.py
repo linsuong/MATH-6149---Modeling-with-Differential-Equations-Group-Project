@@ -2,42 +2,49 @@ import scipy.integrate as int
 import numpy as np
 import matplotlib.pyplot as plt
 
-#boundary conditions:
-def A(t):
-    # Example boundary value at left end, change as needed
-    return 0
-
-def B(t):
-    # Example boundary value at right end, change as needed
-    return 0
-
-
+# Parameters
 N = 10
 x = np.linspace(-1, 1, N)
+dx = x[1] - x[0]
 
-u = np.zeros(N)
-s = np.zeros(N)
+# Tridiagonal matrix for second derivative
+main_diag = -2 * np.ones(N)
+off_diag = np.ones(N - 1)
+A_matrix = np.diag(main_diag) + np.diag(off_diag, k=1) + np.diag(off_diag, k=-1)
 
-array = -2 * np.eye(N) + np.eye(N, k=1) + np.eye(N, k=-1)
-print(array)
+# Boundary condition functions
+def A(t):
+    return 0  # Left boundary value
 
-boundaryConditions = np.zeros(N)
+def B(t):
+    return 0  # Right boundary value
 
+# ODE system from Method of Lines
 def lines_1D(t, u):
-    boundaryConditions[0] = A(t)
-    boundaryConditions[-1] = B(t)
-    diffusion = (np.matmul(array, u) + boundaryConditions) / (x[1] - x[0])**2
+    # Enforce boundary conditions
+    u[0] = A(t)
+    u[-1] = B(t)
+
+    # Construct boundary vector
+    b = np.zeros(N)
+    b[0] = A(t)
+    b[-1] = B(t)
+
+    # Matrix-vector formulation
+    laplacian = (A_matrix @ u + b) / dx**2
     source = np.exp(u)
-    return diffusion + source
+    return laplacian + source
 
-# Initial condition: all zeros (or you can modify this)
+# Initial condition
 u0 = np.zeros(N)
+u0[0] = A(0)
+u0[-1] = B(0)
 
-# Time span for the simulation
-t_span = (0, 1)  # From t=0 to t=1
-t_eval = np.linspace(t_span[0], t_span[1], 100)  # Points where solution is computed
+# Time span and evaluation points
+t_span = (0, 100)
+t_eval = np.linspace(t_span[0], t_span[1], 100)
 
-# Solve the system using solve_ivp
+# Solve the system
 sol = int.solve_ivp(lines_1D, t_span, u0, t_eval=t_eval, method='RK45')
 
 # Plot the solution at final time
