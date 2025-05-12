@@ -27,6 +27,10 @@
 \usepackage[skip=10pt plus1pt]{parskip} %I got rid of indent=30pt to make the paragraphs line up nicer - GI
 \usepackage[top=3cm, bottom=5cm, left=2.5cm, right=2.5cm]{geometry}
 
+\newcommand{\twoeda}{-2e^{\tilde{T}}\text{Da}}
+\newcommand{\eda}{e^{\tilde{T}}\text{Da}}
+\newcommand{\da}{\text{Da}}
+
 \title{combustion note dump}
 \author{:O}
 \begin{document}
@@ -50,7 +54,7 @@ Damkohler number (confirmed by Toby):
 
 
 Done:
--steady state solution for 1D flat model; conclusion (temporary): no steady state soln as c=0; maybe do limit? \\
+-steady state solution for 1D flat model \\
 
 $\tilde{x} > 0$
 \begin{align} \label{Steady State Solution}
@@ -75,5 +79,112 @@ where the top case applies to $x>0$, and the bottom case applies to $x<0$.
 
 To do:
 
+%%%%% before copying please add the following commads to your preamble (the section before \begin{document}:
+%\newcommand{\twoeda}{-2e^{\tilde{T}}\text{Da}}
+%\newcommand{\eda}{e^{\tilde{T}}\text{Da}}
+%\newcommand{\da}{\text{Da}}
 
+%%%%%%%%%%%%%%
+\section{step by step derivation for constants}
+\begin{equation}
+    \begin{split}
+         \frac{d\tilde{T}}{d\tilde{x}} = \pm \sqrt{\twoeda + c}
+         \\\implies \int\frac{\pm1}{\sqrt{\twoeda + c}}d\tilde{T} = \int dx
+         \\ u = \sqrt{\twoeda + c}
+         \\ \frac{du}{d\tilde{T}} = \frac{1}{2}\left (\twoeda + c\right) ^ {-\frac{1}{2}}\cdot \left(\twoeda\right)
+         \\ =\frac{-e^{\tilde{T}}\text{Da}}{\sqrt{\twoeda + c}} 
+         \\ \implies d\tilde{T} = \frac{\sqrt{\twoeda}}{-e^{\tilde{T}}\text{Da}}du
+         \\ \implies \int \frac{\pm 1}{e^{\tilde{T}}\text{Da}}du = \int dx
+         \\ \frac{u^2 - c}{2} = -e^{\tilde{T}}\text{Da}
+         \implies \int \frac{\pm 2}{u^2 - c}du = \int dx
+         \\ \implies \int \frac{\pm 2}{(u + \sqrt{c})(u - \sqrt{c}}du = \int dx
+    \end{split}
+\end{equation}
+part 2: 
+\begin{equation}
+    \begin{split}
+         \int \frac{\pm 2}{(u + \sqrt{c})(u - \sqrt{c}}du = \frac{1}{\sqrt{c}}\left[\ln{|u - \sqrt{c}| - \ln|u + \sqrt{c}|} \right]\\ = \frac{1}{\sqrt{c}}\ln\left|\frac{u \mp c}{u \pm c} \right|
+        \\ \frac{1}{\sqrt{c}}\ln\left|\frac{\sqrt{\twoeda + c} \mp c}{\sqrt{\twoeda + c} \pm c} \right|
+        \\\implies \frac{1}{\sqrt{c}}\ln\left|\frac{\sqrt{\twoeda + c} \mp \sqrt{c}}{\sqrt{\twoeda + c} \pm \sqrt{c}} \right| = x + a
+        \\ \implies \frac{(\sqrt{v}\mp \sqrt{c})(\sqrt{c - 2\da}\pm \sqrt{c})}{(\sqrt{v}\pm \sqrt{c})(\sqrt{c - 2\da}) \mp \sqrt{c}} = e^{\pm \sqrt{c}}
+    \end{split}
+\end{equation}
+The boundary condition that $\tilde{T} = 0$, at $x = \pm 1$ gives us:
+\begin{equation}
+    a = \frac{1}{\sqrt{c}}\ln\left|\frac{\sqrt{-2Da + c} \mp \sqrt{c}}{\sqrt{-2Da + c} \pm \sqrt{c}} \right| \pm 1,
+\end{equation}
+we then get: 
+\begin{equation}
+    \frac{1}{\sqrt{c}}\ln\left|\frac{\sqrt{\twoeda + c} \mp \sqrt{c}}{\sqrt{\twoeda + c} \pm \sqrt{c}} \right| = x + \frac{1}{\sqrt{c}}\ln\left|\frac{\sqrt{-2Da + c} \mp \sqrt{c}}{\sqrt{-2Da + c} \pm \sqrt{c}} \right| \pm 1.
+\end{equation}
+From before, we had:
+\begin{equation}
+    \frac{d\tilde{T}}{d\tilde{x}} = \pm \sqrt{\twoeda + c},
+\end{equation}
+and then defining $v = -2e^{\tilde{T}}Da +c$ we have:
+\begin{equation}
+    \frac{d\tilde{T}}{d\tilde{x}} = \pm \sqrt{v},
+\end{equation}
+which is equal to $0$ when $x = 0$ due to the boundary condition that $\frac{\partial\tilde{T}}{\partial \tilde{x}} = 0$ at $x = 0$. 
+Also at $x = 0$ we get:
+\begin{equation}
+    \frac{1}{\sqrt{c}}\ln\left|\frac{\sqrt{v} \mp \sqrt{c}}{\sqrt{v} \pm \sqrt{c}} \right| = \frac{1}{\sqrt{c}}\ln\left|\frac{\sqrt{-2Da + c} \mp \sqrt{c}}{\sqrt{-2Da + c} \pm \sqrt{c}} \right| \pm 1.
+\end{equation}
+part 3
+\begin{equation}
+\begin{split}
+\frac{(\sqrt{v}\mp \sqrt{c})(\sqrt{c - 2\da}\pm \sqrt{c})}{(\sqrt{v}\pm \sqrt{c})(\sqrt{c - 2\da}) \mp \sqrt{c}} = e^{\pm \sqrt{c}}\\
+\implies
+    \sqrt{v}\sqrt{c - 2\da}\pm\sqrt{v}\sqrt{c}-e^{\pm\sqrt{c}}[\sqrt{v}\sqrt{c - 2\da} \mp \sqrt{v}\sqrt{c}] = e^{\pm \sqrt{c}}\left[\pm \sqrt{c^2 - 2c \da} - c\right] \pm \sqrt{c^2 - 2c\da} + c
+    \\ \sqrt{v} = \frac{e^{\pm \sqrt{c}}\left[\pm \sqrt{c^2 - 2c \da} - c\right] \pm \sqrt{c^2 - 2c\da} + c}{\sqrt{c - 2\da}\pm\sqrt{c}-e^{\pm\sqrt{c}}[\sqrt{c - 2\da} \mp \sqrt{c}]}
+\end{split}
+\end{equation}
+$\sqrt{v} = \frac{d\tilde{T}}{d\tilde{x}}$ at $x = 0$:
+
+\begin{equation}
+    \begin{split}
+        e^{\pm \sqrt{c}}\left[\pm\sqrt{c^2 - 2\da} - c\right] \pm \sqrt{c^2 - 2c\da} + c = 0
+        \\ \text{c}\neq 0:
+        \\ \implies e^{\pm\sqrt{c}} = \frac{\mp \sqrt{c - 2\da} - \sqrt{c}}{\pm \sqrt{c - 2\da} - \sqrt{c}}
+        \\ \implies \sqrt{c} = \ln\left| \frac{\pm \sqrt{c - 2\da} - \sqrt{c}}{\mp \sqrt{c - 2\da} - \sqrt{c}}\right|.
+    \end{split}
+\end{equation}
+
+
+
+\section{some long equations i typed out}
+Eqn 2 in method of lines:
+\begin{equation}
+    \frac{d\vec{u}}{dt} = \frac{1}{\Delta x^2}
+        \begin{pmatrix}
+            -2 & 1& \cdots & 0 \\
+            1 & -2 & 1 & \\
+            0&\ddots & \ddots & \ddots\\
+            \vdots&1 & -2 & 1 &\\\
+            0 & \cdots &1 &-2 
+        \end{pmatrix}
+        \vec{u}(t) + \frac{1}{\Delta x^2}
+        \begin{pmatrix}
+            A(t) \\
+            0 \\
+            \vdots \\
+            0 \\
+            B(t)
+        \end{pmatrix}
+        + \begin{pmatrix}
+            S(u_1, x_1)\\
+            \vdots \\
+            S(u_{N-1}, x_{N-1})
+        
+        \end{pmatrix}
+\end{equation}
+\section{Real world quantities}
+Coal:
+$\rho = 1300 kg/m^3$, $c_p = 1262$, $\kappa = 0.2$, $E_a = 396.52, $\Delta H = 120 kJ/kg$, $k_0$
+
+Sawdust:
+$\rho = 210 kg/m^3$, $c_p = 0.9$, $\kappa = 0.08 J/smK$, $E_a = 269 kJ/mol$, $\Delta H = $, $k_0 = $
+
+Pistachios:
+$\rho \approx 500 kg/m^3$, $c_p = 1.6 kJ/kg$, $\kappa$, $E_a = 8.75 J/mol$, $\Delta H$, $k_0$
 \end{document}
